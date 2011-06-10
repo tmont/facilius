@@ -3,13 +3,12 @@
 	namespace Facilius;
 
 	class Route {
-
 		private $pattern;
-		private $routeData;
+		private $defaults;
 
-		public function __construct($pattern, array $routeData = array()) {
+		public function __construct($pattern, array $defaults = array()) {
 			$this->pattern = $pattern;
-			$this->routeData = $routeData;
+			$this->defaults = $defaults;
 		}
 
 		public function match($url) {
@@ -19,9 +18,8 @@
 				return null;
 			}
 
-			return isset($matches[1]) ? array_slice($matches, 1) : array();
+			return array_slice($matches, 1) + $this->defaults;
 		}
-
 	}
 
 ?>

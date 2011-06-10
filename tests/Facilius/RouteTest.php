@@ -5,7 +5,6 @@
 	use Facilius\Route;
 
 	class RouteTest extends \PHPUnit_Framework_TestCase {
-
 		public function testRouteWithNoGroupsShouldMatchButBeEmpty() {
 			$route = new Route('.*');
 			$match = $route->match('/foo');
@@ -37,6 +36,26 @@
 			self::assertNotNull($match);
 		}
 
+		public function testShouldUseDefaultsWithNumericKeys() {
+			$route = new Route('/(.+)(?:/(\d))?', array('foo', 3));
+			$match = $route->match('/bar');
+
+			self::assertNotNull($match);
+			self::assertEquals('bar', $match[0]);
+			self::assertEquals(3, $match[1]);
+		}
+
+		public function testShouldUseDefaultsWithNamedKeys() {
+			$route = new Route('/(?<controller>.+)(?:/(?<id>\d))?', array('controller' => 'foo', 'id' => 3));
+			$match = $route->match('/bar');
+
+			self::assertNotNull($match);
+			self::assertArrayHasKey('controller', $match);
+			self::assertArrayHasKey('id', $match);
+
+			self::assertEquals('bar', $match['controller']);
+			self::assertEquals(3, $match['id']);
+		}
 	}
 
 ?>
