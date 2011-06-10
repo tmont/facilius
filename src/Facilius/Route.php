@@ -2,32 +2,24 @@
 
 	namespace Facilius;
 
-	class Router {
-
-		public function __construct() {
-
-		}
-
-	}
-
 	class Route {
 
 		private $pattern;
 		private $routeData;
 
-		public function __construct($pattern, array $routeData) {
+		public function __construct($pattern, array $routeData = array()) {
 			$this->pattern = $pattern;
 			$this->routeData = $routeData;
 		}
 
 		public function match($url) {
-			$regex = '/' . preg_quote($this->pattern, '/') . '/';
+			$regex = '/' . str_replace('/', '\\/', $this->pattern) . '/';
 
 			if (!preg_match($regex, $url, $matches)) {
 				return null;
 			}
 
-			return $matches;
+			return isset($matches[1]) ? array_slice($matches, 1) : array();
 		}
 
 	}
