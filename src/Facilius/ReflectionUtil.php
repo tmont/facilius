@@ -6,6 +6,11 @@
 
 	class ReflectionUtil {
 
+		/**
+		 * @param \ReflectionProperty $property
+		 * @param bool $nullable
+		 * @return string|null
+		 */
 		public static function getPropertyType(ReflectionProperty $property, &$nullable) {
             $values = self::getDocCommentValues($property);
             $nullable = false;
@@ -20,6 +25,10 @@
             return null;
         }
 
+		/**
+		 * @param \ReflectionParameter $parameter
+		 * @return string
+		 */
         public static function getParameterType(ReflectionParameter $parameter) {
             if ($parameter->isArray()) {
                 return 'array';
@@ -40,6 +49,10 @@
             return 'string';
         }
 
+		/**
+		 * @param object $reflector
+		 * @return array
+		 */
 		public static function getDocCommentValues($reflector) {
             if ($reflector instanceof ReflectionParameter) {
                 //the documentation for parameters is in the function documentation (e.g. @param)
@@ -76,10 +89,18 @@
             return $combined;
         }
 
+		/**
+		 * @param string $type
+		 * @return bool
+		 */
 		public static function isSimpleType($type) {
             return in_array(strtolower($type), array('int', 'integer', 'bool', 'boolean', 'string', 'double', 'float', 'null'));
         }
 
+		/**
+		 * @param string $type
+		 * @return bool
+		 */
         public static function isBuiltInType($type) {
             return self::isSimpleType($type) || in_array(strtolower($type), array('array', 'resource'));
         }
