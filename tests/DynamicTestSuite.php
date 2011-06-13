@@ -68,6 +68,7 @@
 	} else {
 		require_once $GLOBALS['path'];
 		$testClass = ltrim(str_replace($testsDir, '', $GLOBALS['path']), DIRECTORY_SEPARATOR . '/');
+		$testClass = str_replace(DIRECTORY_SEPARATOR, '\\', $testClass);
 		$testClass = str_replace("$projectName\\", "$projectName\\Tests\\", $testClass);
 		$testClass = substr($testClass, 0, -4);
 		$GLOBALS['test_classes'][] = $testClass;
