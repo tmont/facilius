@@ -20,7 +20,8 @@
 				return null;
 			}
 
-			return array_slice($matches, 1) + $this->defaults;
+			$data = array_slice($matches, 1) + $this->defaults;
+			return new RouteMatch($this, $data);
 		}
 
 		public function getName() {
@@ -28,5 +29,5 @@
 		}
 
 	}
-
+	
 ?>

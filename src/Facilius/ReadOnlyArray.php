@@ -2,16 +2,18 @@
 
 	namespace Facilius;
 
-	use BadMethodCallException, ArrayAccess;
+	use BadMethodCallException, ArrayAccess, Countable;
 
 	/**
 	 * A readonly wrapper around an array
 	 */
-	class ReadOnlyArray implements ArrayAccess {
+	class ReadOnlyArray implements ArrayAccess, Countable {
 		private $data;
+		private $count;
 
 		public function __construct(array $data) {
 			$this->data = $data;
+			$this->count = count($this->data);
 		}
 
 		public function offsetExists($offset) {
@@ -28,6 +30,10 @@
 
 		public function offsetUnset($offset) {
 			throw new BadMethodCallException('This array is readonly');
+		}
+
+		public function count() {
+			return $this->count;
 		}
 	}
 	

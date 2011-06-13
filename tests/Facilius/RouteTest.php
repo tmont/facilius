@@ -10,7 +10,7 @@
 			$match = $route->match('/foo');
 
 			self::assertNotNull($match);
-			self::assertEmpty($match);
+			self::assertEquals(0, count($match));
 		}
 
 		public function testRouteWithGroupsOnlyReturnsGroups() {
@@ -50,9 +50,6 @@
 			$match = $route->match('/bar');
 
 			self::assertNotNull($match);
-			self::assertArrayHasKey('controller', $match);
-			self::assertArrayHasKey('id', $match);
-
 			self::assertEquals('bar', $match['controller']);
 			self::assertEquals(3, $match['id']);
 		}
