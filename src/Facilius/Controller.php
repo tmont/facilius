@@ -22,7 +22,7 @@
 				$type = ReflectionUtil::getParameterType($param);
 				$binder = @$context->modelBinders[$type] ?: new DefaultModelBinder();
 				$bindingContext = new BindingContext($context, $param, $type);
-				$params[$param->getPosition()] = $binder->bindModel($type);
+				$params[$param->getPosition()] = $binder->bindModel($bindingContext);
 			}
 			
 
@@ -30,42 +30,5 @@
 		}
 
 	}
-
-	class BindingContext {
-		public $executionContext;
-		public $parameter;
-		public $type;
-
-		public function __construct(ActionExecutionContext $context, ReflectionParameter $parameter, $type) {
-			$this->executionContext = $context;
-			$this->parameter = $parameter;
-			$this->type = $type;
-		}
-	}
-
-
-	interface ModelBinder {
-		/**
-		 * @return object
-		 */
-		function bindModel(BindingContext $context);
-	}
-
-	class DefaultModelBinder implements ModelBinder {
-
-		public function bindModel(BindingContext $context) {
-			//if it's a simple type, then we match names
-
-			//if it's an array, then we wrap it in a collection and handle in a specific fashion
-
-			//if it's a complex type, then we need to match property names, and recursively call bind model
-
-
-		}
-	}
-
-
-
-
 
 ?>

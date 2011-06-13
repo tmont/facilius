@@ -37,7 +37,7 @@
                 }
             }
 
-            return null;
+            return 'string';
         }
 
 		public static function getDocCommentValues($reflector) {
@@ -45,6 +45,7 @@
                 //the documentation for parameters is in the function documentation (e.g. @param)
                 $reflector = $reflector->getDeclaringFunction();
             }
+
             if (!method_exists($reflector, 'getDocComment')) {
                 return array();
             }
