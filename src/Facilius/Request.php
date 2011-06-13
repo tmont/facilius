@@ -29,7 +29,7 @@
 		private $urlData;
 		private $readonlyData;
 
-		public function __construct(array $get, array $post, array $cookie, array $files, array $server) {
+		public function __construct(array $get = array(), array $post = array(), array $cookie = array(), array $files = array(), array $server = array()) {
 			list($protocol, )  = explode('/', @$server['SERVER_PROTOCOL'], 2);
 			if (empty($protocol)) {
 				$protocol = 'HTTP';
