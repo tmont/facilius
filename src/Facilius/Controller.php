@@ -6,26 +6,37 @@
 
 	abstract class Controller {
 
-		public final function execute($action, ActionExecutionContext $context) {
-			if (!method_exists($this, $action)) {
-				throw new UnknownActionException(get_class($this), $action);
+		/**
+		 * @param ActionExecutionContext $context
+		 * @return ActionResult
+		 */
+		public final function execute(ActionExecutionContext $context) {
+			if (!method_exists($this, $context->action)) {
+				return $this->handleUnknownAction($context);
 			}
 
-			$method = new ReflectionMethod($this, $action);
+			$method = new ReflectionMethod($this, $context->action);
 			$refParams = $method->getParameters();
 
 			//create parameters for action, i.e. model binding
+			if (count($refParams) > 0) {
+				$params = array();
+				$requestValues = array_merge($context->request->queryString->toArray(), $context->request->post->toArray());
 
-			$params = array();
-			$requestValues = $context->request->queryString->toArray() + $context->request->post->toArray();
+				foreach ($refParams as $param) {
+					$type = ReflectionUtil::getParameterType($param);
+					$binder = $context->modelBinders->getBinderOrDefault($type);
+					$params[$param->getPosition()] = $binder->bindModel(new BindingContext($requestValues, $context, $param->getName(), $type));
+				}
 
-			foreach ($refParams as $param) {
-				$type = ReflectionUtil::getParameterType($param);
-				$binder = @$context->modelBinders[$type] ?: new DefaultModelBinder();
-				$params[$param->getPosition()] = $binder->bindModel(new BindingContext($requestValues, $context, $param, $type));
+				return $method->invokeArgs($this, $params);
 			}
 
-			return $method->invokeArgs($this, $params);
+			return $method->invoke($this);
+		}
+
+		protected function handleUnknownAction(ActionExecutionContext $context) {
+			throw new UnknownActionException(get_class($this), $context->action);
 		}
 
 	}
