@@ -99,13 +99,12 @@
 			$object = $class->newInstance();
 			$properties = $class->getProperties(ReflectionProperty::IS_PUBLIC);
 
-			$values = $context->values;
 			foreach ($properties as $property) {
 				$name = $property->getName();
 				$propertyType = ReflectionUtil::getPropertyType($property, $nullable);
 				$propertyBinder = @$context->actionContext->modelBinders[$propertyType] ?: $this;
 
-				$potentialValues = $values;
+				$potentialValues = $context->values;
 				if (ReflectionUtil::isComplexType($propertyType)) {
 					$lowerName = strtolower($name);
 
