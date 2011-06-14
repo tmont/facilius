@@ -25,17 +25,13 @@
 			}
 
 			//typed arrays
-			if (isset($context->type[1]) && strrpos($context->type, '[]') === strlen($context->type) - 2) {
+			if (ReflectionUtil::isStronglyTypedArray($context->type)) {
 				return $this->bindTypedArray($context);
 			}
 
 			return $this->bindComplexModel($context);
 		}
 
-		/**
-		 * @param BindingContext $context
-		 * @return bool|float|int|null|string
-		 */
 		private function bindSimpleModel(BindingContext $context) {
 			$value = $context->getValue($context->name);
 
@@ -103,16 +99,26 @@
 			$object = $class->newInstance();
 			$properties = $class->getProperties(ReflectionProperty::IS_PUBLIC);
 
+			$values = $context->values;
 			foreach ($properties as $property) {
 				$name = $property->getName();
-				$value = $context->getValue($name);
-				if ($value === null) {
-					continue;
-				}
-
 				$propertyType = ReflectionUtil::getPropertyType($property, $nullable);
 				$propertyBinder = @$context->actionContext->modelBinders[$propertyType] ?: $this;
-				$newContext = new BindingContext(array($name => $value), $context->actionContext, $name, $propertyType);
+
+				$potentialValues = $values;
+				if (ReflectionUtil::isComplexType($propertyType)) {
+					$lowerName = strtolower($name);
+
+					foreach ($potentialValues as $key => $value) {
+						if (strpos(strtolower($key), $lowerName . '.') === 0) {
+							$potentialValues[substr($key, strlen($lowerName) + 1)] = $value;
+						} else {
+							unset($potentialValues[$key]);
+						}
+					}
+				}
+
+				$newContext = new BindingContext($potentialValues, $context->actionContext, $name, $propertyType);
 				$property->setValue($object, $propertyBinder->bindModel($newContext));
 			}
 

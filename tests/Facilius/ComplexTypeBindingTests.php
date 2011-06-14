@@ -16,30 +16,17 @@
 		 * @var \Facilius\DefaultModelBinder
 		 */
 		private $binder;
-		/**
-		 * @var \ReflectionClass
-		 */
-		private $class;
-		/**
-		 * @var \ReflectionParameter[]
-		 */
-		private $params;
-
-		public function __construct() {
-			$this->class = new ReflectionClass(__NAMESPACE__ . '\ObjectToBind3');
-			$this->params = $this->class->getMethod('foo')->getParameters();
-		}
 
 		public function setUp() {
 			$this->binder = new DefaultModelBinder();
 		}
 
-		private function createContext(array $values, $type) {
-			return new BindingContext($values, new ActionExecutionContext(new Request(), new RouteMatch(new Route(''), array())), $this->params[0], $type);
+		private function createContext(array $values, $type, $name) {
+			return new BindingContext($values, new ActionExecutionContext(new Request(), new RouteMatch(new Route(''), array())), $name, $type);
 		}
 
-		public function testBindComplexObject() {
-			$model = $this->binder->bindModel($this->createContext(array('foo' => '70', 'bar' => 'lulz'), '\Facilius\Tests\TestObject'));
+		public function testBindObject() {
+			$model = $this->binder->bindModel($this->createContext(array('foo' => '70', 'bar' => 'lulz'), '\Facilius\Tests\TestObject', 'asdf'));
 
 			self::assertNotNull($model);
 			self::assertInstanceOf('\Facilius\Tests\TestObject', $model);
@@ -47,10 +34,24 @@
 			self::assertSame('lulz', $model->bar);
 		}
 
-	}
+		public function testBindObjectWithNestedObjects() {
+			$model = $this->binder->bindModel($this->createContext(array('outer.inner.foo' => '70', 'outer.inner.bar' => 'lulz', 'outer.lol2' => 'lolz', 'lol' => 'oh hai!'), '\Facilius\Tests\TestObject3', 'does not matter'));
 
-	class ObjectToBind3 {
-		public function foo(TestObject $foo) {}
+			self::assertNotNull($model);
+			self::assertInstanceOf('\Facilius\Tests\TestObject3', $model);
+			self::assertSame('oh hai!', $model->lol);
+
+			self::assertNotNull($model->outer);
+			self::assertInstanceOf('\Facilius\Tests\TestObject2', $model->outer);
+			self::assertSame('lolz', $model->outer->lol2);
+
+			self::assertNotNull($model->outer->inner);
+			self::assertInstanceOf('\Facilius\Tests\TestObject', $model->outer->inner);
+
+			self::assertSame(70, $model->outer->inner->foo);
+			self::assertSame('lulz', $model->outer->inner->bar);
+		}
+
 	}
 
 	class TestObject {
@@ -59,6 +60,24 @@
 		 */
 		public $foo;
 		public $bar;
+	}
+
+	class TestObject2 {
+		/**
+		 * @var \Facilius\Tests\TestObject
+		 */
+		public $inner;
+
+		public $lol2;
+	}
+
+	class TestObject3 {
+		/**
+		 * @var \Facilius\Tests\TestObject2
+		 */
+		public $outer;
+
+		public $lol;
 	}
 
 ?>

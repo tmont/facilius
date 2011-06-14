@@ -18,7 +18,10 @@
 		 */
 		public $type;
 
-		private $values;
+		/**
+		 * @var array
+		 */
+		public $values;
 
 		public function __construct(array $values, ActionExecutionContext $context, $name, $type) {
 			$this->actionContext = $context;

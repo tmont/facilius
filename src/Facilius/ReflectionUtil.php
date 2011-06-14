@@ -103,6 +103,22 @@
 		 * @param string $type
 		 * @return bool
 		 */
+		public static function isComplexType($type) {
+			return !self::isSimpleType($type) && $type !== 'array' && !self::isStronglyTypedArray($type);
+		}
+
+		/**
+		 * @param string $type
+		 * @return bool
+		 */
+		public static function isStronglyTypedArray($type) {
+			return isset($type[1]) && strrpos($type, '[]') === strlen($type) - 2;
+		}
+
+		/**
+		 * @param string $type
+		 * @return bool
+		 */
         public static function isBuiltInType($type) {
             return self::isSimpleType($type) || in_array(strtolower($type), array('array', 'resource'));
         }
