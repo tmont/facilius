@@ -6,9 +6,9 @@
 
 	class BindingContext {
 		/**
-		 * @var \Facilius\ActionExecutionContext
+		 * @var \Facilius\Request
 		 */
-		public $executionContext;
+		public $actionContext;
 		/**
 		 * @var \ReflectionParameter
 		 */
@@ -18,10 +18,17 @@
 		 */
 		public $type;
 
-		public function __construct(ActionExecutionContext $context, ReflectionParameter $parameter, $type) {
-			$this->executionContext = $context;
+		private $values;
+
+		public function __construct(array $values, ActionExecutionContext $context, ReflectionParameter $parameter, $type) {
+			$this->actionContext = $context;
 			$this->parameter = $parameter;
 			$this->type = $type;
+			$this->values = $values;
+		}
+
+		public function getValue($key) {
+			return @$this->values[$key];
 		}
 	}
 	

@@ -17,14 +17,13 @@
 			//create parameters for action, i.e. model binding
 
 			$params = array();
+			$requestValues = $context->request->queryString->toArray() + $context->request->post->toArray();
 
 			foreach ($refParams as $param) {
 				$type = ReflectionUtil::getParameterType($param);
 				$binder = @$context->modelBinders[$type] ?: new DefaultModelBinder();
-				$bindingContext = new BindingContext($context, $param, $type);
-				$params[$param->getPosition()] = $binder->bindModel($bindingContext);
+				$params[$param->getPosition()] = $binder->bindModel(new BindingContext($requestValues, $context, $param, $type));
 			}
-			
 
 			return $method->invokeArgs($this, $params);
 		}

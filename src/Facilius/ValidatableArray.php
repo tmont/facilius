@@ -4,17 +4,18 @@
 
 	use Iterator, ArrayAccess, Countable, Closure;
 
-	class StronglyTypedCollection implements Iterator, ArrayAccess, Countable {
+	class ValidatableArray implements Iterator, ArrayAccess, Countable {
 
-		private $data = array();
-		private $type;
+		private $data;
+		private $validator;
 
-		public function __construct($type) {
-			$this->type = $type;
+		public function __construct(Closure $validator, array $initialData = array()) {
+			$this->data = $initialData;
+			$this->validator = $validator;
 		}
 
 		private function validate($value) {
-			return $value instanceof $this->type;
+			return call_user_func($this->validator, $value);
 		}
 
 		public function current() {
@@ -43,7 +44,7 @@
 
 		public function offsetSet($offset, $value) {
 			if (!$this->validate($value)) {
-				throw new InvalidValueException();
+				throw new InvalidValueException('Invalid value');
 			}
 
 			$this->data[$offset] = $value;
@@ -63,6 +64,10 @@
 
 		public function count() {
 			return count($this->data);
+		}
+
+		public function toArray() {
+			return $this->data;
 		}
 	}
 

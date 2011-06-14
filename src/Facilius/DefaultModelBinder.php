@@ -14,18 +14,33 @@
 				return $this->bindSimpleModel($context);
 			}
 
-			//if it's an array, then we wrap it in a collection and handle in a specific fashion
+			//normal arrays
+			if ($context->type === 'array') {
+				$value = $context->getValue($context->parameter->getName());
+				//avoid unnecessary casting
+				return is_array($value) ? $value : (array)$value;
+			}
+
+			//typed arrays
+			if (isset($context->type[1]) && strrpos($context->type, '[]') === strlen($context->type) - 2) {
+				return $this->bindTypedArray($context);
+			}
 
 			//if it's a complex type, then we need to match property names, and recursively call bind model
 
 			return null;
 		}
 
+		/**
+		 * @param BindingContext $context
+		 * @return bool|float|int|null|string
+		 */
 		private function bindSimpleModel(BindingContext $context) {
-			//find a name in the request that matches the name of the parameter (case insensitive)
+			$value = $context->getValue($context->parameter->getName());
 
-			$name = $context->parameter->getName();
-			$value = @$context->executionContext->request->post[$name] ?: @$context->executionContext->request->queryString[$name];
+			if (is_array($value)) {
+				$value = (string)$value;
+			}
 
 			switch ($context->type) {
 				case 'int':
@@ -50,6 +65,24 @@
 				default:
 					return (string)$value;
 			}
+		}
+
+		private function bindTypedArray(BindingContext $context) {
+			$arrayType = substr($context->type, 0, -2);
+			$arrayValueBinder = @$context->actionContext->modelBinders[$arrayType] ?: $this;
+
+			$name = $context->parameter->getName();
+			$values = $context->getValue($name);
+			if (!is_array($values)) {
+				$values = (array)$values;
+			}
+
+			$returnValue = array();
+			foreach ($values as $value) {
+				$returnValue[] = $arrayValueBinder->bindModel(new BindingContext(array($name => $value), $context->actionContext, $context->parameter, $arrayType));
+			}
+
+			return $returnValue;
 		}
 
 	}

@@ -34,84 +34,68 @@
 			$this->binder = new DefaultModelBinder();
 		}
 
-		private static function createActionContext(Request $request) {
-			return new ActionExecutionContext($request, new RouteMatch(new Route(''), array()));
+		private function createContext(array $values, $type) {
+			return new BindingContext($values, new ActionExecutionContext(new Request(), new RouteMatch(new Route(''), array())), $this->params[0], $type);
 		}
 
 		public function testBindDouble() {
-			$request = new Request(array('a' => '17.4'));
-			self::assertSame(17.4, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'double')));
+			self::assertSame(17.4, $this->binder->bindModel($this->createContext(array('a' => '17.4'), 'double')));
 		}
 
 		public function testBindFloat() {
-			$request = new Request(array('a' => '17.4'));
-			self::assertSame(17.4, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'float')));
+			self::assertSame(17.4, $this->binder->bindModel($this->createContext(array('a' => '17.4'), 'float')));
 		}
 
 		public function testBindFloatFromStringIsZero() {
-			$request = new Request(array('a' => 'asdf'));
-			self::assertSame(0.0, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'float')));
-			self::assertSame(0.0, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'double')));
+			self::assertSame(0.0, $this->binder->bindModel($this->createContext(array('a' => 'asdf'), 'double')));
+			self::assertSame(0.0, $this->binder->bindModel($this->createContext(array('a' => 'asdf'), 'float')));
 		}
 
 		public function testBindString() {
-			$request = new Request(array('a' => 'asdf'));
-			self::assertSame('asdf', $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'string')));
+			self::assertSame('asdf', $this->binder->bindModel($this->createContext(array('a' => 'asdf'), 'string')));
 		}
 
 		public function testBindBooleanFromBooleanString() {
-			$request = new Request(array('a' => 'false'));
-			self::assertSame(false, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'bool')));
-			self::assertSame(false, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'boolean')));
-
-			$request = new Request(array('a' => 'true'));
-			self::assertSame(true, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'bool')));
-			self::assertSame(true, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'boolean')));
+			self::assertSame(false, $this->binder->bindModel($this->createContext(array('a' => 'false'), 'bool')));
+			self::assertSame(false, $this->binder->bindModel($this->createContext(array('a' => 'false'), 'boolean')));
+			self::assertSame(true, $this->binder->bindModel($this->createContext(array('a' => 'true'), 'bool')));
+			self::assertSame(true, $this->binder->bindModel($this->createContext(array('a' => 'true'), 'boolean')));
 		}
 
 		public function testBindBooleanFromInteger() {
-			$request = new Request(array('a' => '0'));
-			self::assertSame(false, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'bool')));
-
-			$request = new Request(array('a' => '1'));
-			self::assertSame(true, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'bool')));
+			self::assertSame(false, $this->binder->bindModel($this->createContext(array('a' => '0'), 'bool')));
+			self::assertSame(true, $this->binder->bindModel($this->createContext(array('a' => '1'), 'bool')));
+			self::assertSame(true, $this->binder->bindModel($this->createContext(array('a' => '984'), 'bool')));
 		}
 
 		public function testBindBooleanFromNullIsFalse() {
-			$request = new Request(array('a' => null));
-			self::assertSame(false, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'bool')));
+			self::assertSame(false, $this->binder->bindModel($this->createContext(array('a' => null), 'bool')));
 		}
 
 		public function testBindBooleanFromEmptyStringIsFalse() {
-			$request = new Request(array('a' => ''));
-			self::assertSame(false, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'bool')));
+			self::assertSame(false, $this->binder->bindModel($this->createContext(array('a' => ''), 'bool')));
 		}
 
 		public function testBindBooleanFromNonEmptyStringIsTrue() {
-			$request = new Request(array('a' => 'asdf'));
-			self::assertSame(true, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'bool')));
+			self::assertSame(true, $this->binder->bindModel($this->createContext(array('a' => 'asdf'), 'bool')));
 		}
 
 		public function testBindInteger() {
-			$request = new Request(array('a' => '12'));
-			self::assertSame(12, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'int')));
-			self::assertSame(12, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'integer')));
+			self::assertSame(12, $this->binder->bindModel($this->createContext(array('a' => '12'), 'int')));
+			self::assertSame(12, $this->binder->bindModel($this->createContext(array('a' => '12'), 'integer')));
 		}
 
 		public function testBindNegativeInteger() {
-			$request = new Request(array('a' => '-12'));
-			self::assertSame(-12, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'int')));
-			self::assertSame(-12, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'integer')));
+			self::assertSame(-12, $this->binder->bindModel($this->createContext(array('a' => '-12'), 'int')));
+			self::assertSame(-12, $this->binder->bindModel($this->createContext(array('a' => '-12'), 'integer')));
 		}
 
 		public function testBindIntegerFromStringIsZero() {
-			$request = new Request(array('a' => 'asdf'));
-			self::assertSame(0, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'int')));
+			self::assertSame(0, $this->binder->bindModel($this->createContext(array('a' => 'asdf'), 'int')));
 		}
 
 		public function testBindNull() {
-			$request = new Request(array('a' => 'asdf'));
-			self::assertSame(null, $this->binder->bindModel(new BindingContext(self::createActionContext($request), $this->params[0], 'null')));
+			self::assertSame(null, $this->binder->bindModel($this->createContext(array('a' => 'asdf'), 'null')));
 		}
 
 	}
