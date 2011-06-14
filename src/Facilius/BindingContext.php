@@ -10,9 +10,9 @@
 		 */
 		public $actionContext;
 		/**
-		 * @var \ReflectionParameter
+		 * @var string
 		 */
-		public $parameter;
+		public $name;
 		/**
 		 * @var string
 		 */
@@ -20,9 +20,9 @@
 
 		private $values;
 
-		public function __construct(array $values, ActionExecutionContext $context, ReflectionParameter $parameter, $type) {
+		public function __construct(array $values, ActionExecutionContext $context, $name, $type) {
 			$this->actionContext = $context;
-			$this->parameter = $parameter;
+			$this->name = $name;
 			$this->type = $type;
 			$this->values = $values;
 		}

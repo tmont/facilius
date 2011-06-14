@@ -6,6 +6,8 @@
 
 	class ReflectionUtil {
 
+		const DEFAULT_TYPE = 'string';
+
 		/**
 		 * @param \ReflectionProperty $property
 		 * @param bool $nullable
@@ -22,7 +24,7 @@
                 return $values['var'][0];
             }
 
-            return null;
+            return self::DEFAULT_TYPE;
         }
 
 		/**
@@ -46,7 +48,7 @@
                 }
             }
 
-            return 'string';
+            return self::DEFAULT_TYPE;
         }
 
 		/**

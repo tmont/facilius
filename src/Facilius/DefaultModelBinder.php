@@ -2,6 +2,9 @@
 
 	namespace Facilius;
 
+	use ReflectionClass, ReflectionProperty;
+
+
 	class DefaultModelBinder implements ModelBinder {
 
 		/**
@@ -16,7 +19,7 @@
 
 			//normal arrays
 			if ($context->type === 'array') {
-				$value = $context->getValue($context->parameter->getName());
+				$value = $context->getValue($context->name);
 				//avoid unnecessary casting
 				return is_array($value) ? $value : (array)$value;
 			}
@@ -26,9 +29,7 @@
 				return $this->bindTypedArray($context);
 			}
 
-			//if it's a complex type, then we need to match property names, and recursively call bind model
-
-			return null;
+			return $this->bindComplexModel($context);
 		}
 
 		/**
@@ -36,7 +37,7 @@
 		 * @return bool|float|int|null|string
 		 */
 		private function bindSimpleModel(BindingContext $context) {
-			$value = $context->getValue($context->parameter->getName());
+			$value = $context->getValue($context->name);
 
 			if (is_array($value)) {
 				$value = (string)$value;
@@ -71,7 +72,7 @@
 			$arrayType = substr($context->type, 0, -2);
 			$arrayValueBinder = @$context->actionContext->modelBinders[$arrayType] ?: $this;
 
-			$name = $context->parameter->getName();
+			$name = $context->name;
 			$values = $context->getValue($name);
 			if (!is_array($values)) {
 				$values = (array)$values;
@@ -79,10 +80,43 @@
 
 			$returnValue = array();
 			foreach ($values as $value) {
-				$returnValue[] = $arrayValueBinder->bindModel(new BindingContext(array($name => $value), $context->actionContext, $context->parameter, $arrayType));
+				$returnValue[] = $arrayValueBinder->bindModel(new BindingContext(array($name => $value), $context->actionContext, $context->name, $arrayType));
 			}
 
 			return $returnValue;
+		}
+
+		private function bindComplexModel(BindingContext $context) {
+			$type = $context->type;
+			if (!class_exists($type)) {
+				return null;
+			}
+
+			$class = new ReflectionClass($type);
+			$ctor = $class->getConstructor();
+
+			if ($ctor && count($ctor->getParameters()) > 0) {
+				//constructor has parameters, so we can't instantiate this without some inside knowledge
+				return null;
+			}
+
+			$object = $class->newInstance();
+			$properties = $class->getProperties(ReflectionProperty::IS_PUBLIC);
+
+			foreach ($properties as $property) {
+				$name = $property->getName();
+				$value = $context->getValue($name);
+				if ($value === null) {
+					continue;
+				}
+
+				$propertyType = ReflectionUtil::getPropertyType($property, $nullable);
+				$propertyBinder = @$context->actionContext->modelBinders[$propertyType] ?: $this;
+				$newContext = new BindingContext(array($name => $value), $context->actionContext, $name, $propertyType);
+				$property->setValue($object, $propertyBinder->bindModel($newContext));
+			}
+
+			return $object;
 		}
 
 	}

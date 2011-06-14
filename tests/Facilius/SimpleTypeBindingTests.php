@@ -16,26 +16,13 @@
 		 * @var \Facilius\DefaultModelBinder
 		 */
 		private $binder;
-		/**
-		 * @var \ReflectionClass
-		 */
-		private $class;
-		/**
-		 * @var \ReflectionParameter[]
-		 */
-		private $params;
-
-		public function __construct() {
-			$this->class = new ReflectionClass(__NAMESPACE__ . '\ObjectToBind');
-			$this->params = $this->class->getMethod('foo')->getParameters();
-		}
-
+		
 		public function setUp() {
 			$this->binder = new DefaultModelBinder();
 		}
 
 		private function createContext(array $values, $type) {
-			return new BindingContext($values, new ActionExecutionContext(new Request(), new RouteMatch(new Route(''), array())), $this->params[0], $type);
+			return new BindingContext($values, new ActionExecutionContext(new Request(), new RouteMatch(new Route(''), array())), 'a', $type);
 		}
 
 		public function testBindDouble() {
