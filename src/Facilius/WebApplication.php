@@ -103,37 +103,15 @@ HTML;
 		private function handleRequest(Request $request) {
 			$path = $request->path;
 
-			$routeMatch = null;
-
-			//find matching route
-			foreach ($this->routes as $route) {
-				$routeMatch = $route->match($path);
-				if ($routeMatch) {
-					break;
-				}
-			}
+			$routeMatch = $this->findRoute($path);
 
 			if (!$routeMatch) {
-				//no route found
 				throw new NoMatchedRouteException($path);
 			}
 
 			$controllerName = trim($routeMatch['controller']);
 			$action = trim($routeMatch['action']);
-
-			if (!$controllerName) {
-				$routeName = $routeMatch->getRoute()->getName();
-				throw new InvalidRouteMatchException(
-					"No controller specified in route \"$routeName\" for path \"$path\""
-				);
-			}
-
-			if (!$action) {
-				$routeName = $routeMatch->getRoute()->getName();
-				throw new InvalidRouteMatchException(
-					"No action specified in route \"$routeName\" for path \"$path\""
-				);
-			}
+			self::verifyControllerAndAction($routeMatch->getRoute()->getName(), $path, $controllerName, $action);
 
 			$controller = $this->createController($controllerName);
 			$result = $controller->execute(new ActionExecutionContext($request, $routeMatch, $this->binders, $action));
@@ -145,9 +123,30 @@ HTML;
 			$this->response->flush();
 		}
 
+		private function findRoute($path) {
+			foreach ($this->routes as $route) {
+				$routeMatch = $route->match($path);
+				if ($routeMatch) {
+					return $routeMatch;
+				}
+			}
+
+			return null;
+		}
+
+		private static function verifyControllerAndAction($routeName, $path, $controllerName, $action) {
+			if (!$controllerName) {
+				throw new InvalidRouteMatchException("No controller specified in route \"$routeName\" for path \"$path\"");
+			}
+
+			if (!$action) {
+				throw new InvalidRouteMatchException("No action specified in route \"$routeName\" for path \"$path\"");
+			}
+		}
+
 		/**
 		 * @param string $name
-		 * @return \Facilius\Controller
+		 * @return Controller
 		 */
 		protected abstract function createController($name);
 
