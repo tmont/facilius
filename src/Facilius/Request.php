@@ -35,9 +35,12 @@
 				$protocol = 'HTTP';
 			}
 
+			$requestUri = @$server['REQUEST_URI'];
+			list($path, ) = explode('?', $requestUri, 2);
+
 			$this->urlData = array(
 				'port' => @$server['SERVER_PORT'] ?: 80,
-				'path' => @$server['DOCUMENT_URI'],
+				'path' => $path,
 				'queryString' => new ReadOnlyArray($get),
 				'rawQueryString' => @$server['QUERY_STRING'],
 				'protocol' => strtolower($protocol),

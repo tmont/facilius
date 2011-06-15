@@ -23,11 +23,16 @@
 		/**
 		 * @var bool
 		 */
-		private $debugEnabled = false;
+		protected $debugEnabled = false;
 
 		public function __construct() {
 			$this->binders = new ModelBinderRegistry();
 			$this->response = new Response();
+		}
+
+		public final static function start() {
+			$app = new static();
+			$app->run(Request::create());
 		}
 
 		/**
@@ -52,8 +57,8 @@
 		protected function onError(Exception $e) {
 			$errorMessage = '<p>An error occurred during execution of the application.</p>';
 			if ($this->debugEnabled) {
-				$message = '<strong>' . get_class($e) . '</strong>: ' . htmlentities($e->getMessage(), ENT_QUOTES, 'UTF8');
-				$stackTrace = htmlentities($e->getTraceAsString(), ENT_QUOTES, 'UTF8');
+				$message = '<strong>' . get_class($e) . '</strong>: ' . htmlentities($e->getMessage(), ENT_QUOTES, 'UTF-8');
+				$stackTrace = htmlentities($e->getTraceAsString(), ENT_QUOTES, 'UTF-8');
 				$errorMessage = <<<ERROR
 		<p>$message</p>
 		<pre>$stackTrace</pre>
@@ -86,6 +91,9 @@ HTML;
 		protected function onEnd() {}
 
 		public function run(Request $request) {
+			//var_dump($request);
+			//xdebug_dump_superglobals();
+
 			try {
 				$this->onStart();
 				$this->handleRequest($request);

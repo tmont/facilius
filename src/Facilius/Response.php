@@ -15,6 +15,8 @@
 				foreach ($this->headers as $name => $value) {
 					header("$name: $value");
 				}
+
+				header("HTTP/1.1 $this->statusCode");
 			}
 		}
 
@@ -28,7 +30,7 @@
 		}
 
 		public function write($data) {
-			$this->buffer += $data;
+			$this->buffer .= $data;
 			return $this;
 		}
 
