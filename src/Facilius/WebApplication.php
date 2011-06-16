@@ -30,14 +30,12 @@
 		 */
 		protected $urlTransformer;
 
-		public function __construct() {
+		private $viewPath;
+
+		public function __construct($viewPath) {
 			$this->binders = new ModelBinderRegistry();
 			$this->response = new Response();
-		}
-
-		public final static function start() {
-			$app = new static();
-			$app->run(Request::create());
+			$this->viewPath = $viewPath;
 		}
 
 		/**
@@ -52,6 +50,13 @@
 		 */
 		protected final function getResponse() {
 			return $this->response;
+		}
+
+		/**
+		 * @return string
+		 */
+		protected final function getViewPath() {
+			return $this->viewPath;
 		}
 
 		protected final function registerRoute($pattern, array $defaults = array(), $routeName = null) {
@@ -96,6 +101,7 @@ HTML;
 		protected function onEnd() {}
 
 		public function run(Request $request) {
+			ob_start();
 			try {
 				$this->onStart();
 				$this->handleRequest($request);
@@ -108,6 +114,9 @@ HTML;
 			} catch (Exception $e) {
 				$this->onError($e);
 			}
+
+			$output = ob_get_clean();
+			$this->response->write($output)->flush();
 		}
 
 		private function transformPath($path) {
@@ -122,7 +131,6 @@ HTML;
 
 		private function handleRequest(Request $request) {
 			$path = $this->transformPath($request->path);
-
 			$routeMatch = $this->findRoute($path);
 
 			if (!$routeMatch) {
@@ -134,6 +142,10 @@ HTML;
 			self::verifyControllerAndAction($routeMatch->getRoute()->getName(), $path, $controllerName, $action);
 
 			$controller = $this->createController($controllerName);
+			if (!$controller) {
+				throw new ControllerConstructionException("Unable to create controller for path \"$path\"");
+			}
+
 			$result = $controller->execute(new ActionExecutionContext($request, $routeMatch, $this->binders, $action));
 			if (!($result instanceof ActionResult)) {
 				throw new LogicException("The action \"$controllerName::$action\" did not return an instance of \\Facilius\\ActionResult");
