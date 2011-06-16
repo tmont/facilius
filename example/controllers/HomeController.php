@@ -10,6 +10,9 @@
 			return $this->view('index');
 		}
 
+		/**
+		 * @request-method post
+		 */
 		public function form(ExampleModel $model) {
 			return $this->view('form', null, $model);
 		}

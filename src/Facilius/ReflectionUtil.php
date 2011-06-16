@@ -2,11 +2,25 @@
 
 	namespace Facilius;
 
-	use ReflectionParameter, ReflectionProperty;
+	use ReflectionParameter, ReflectionProperty, ReflectionMethod;
 
 	class ReflectionUtil {
 
 		const DEFAULT_TYPE = 'string';
+
+		/**
+		 * @return string|null
+		 */
+		public static function getRequestMethod(ReflectionMethod $method) {
+			$values = self::getDocCommentValues($method);
+			$requestMethod = @$values['request-method'];
+			if (!$requestMethod) {
+				return null;
+			}
+
+			//return the last @request-method annotation
+			return end($requestMethod);
+		}
 
 		/**
 		 * @param \ReflectionProperty $property

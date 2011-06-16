@@ -25,8 +25,13 @@
 			}
 
 			$method = new ReflectionMethod($this, $context->action);
-			$refParams = $method->getParameters();
+			$requestMethod = ReflectionUtil::getRequestMethod($method);
+			if ($requestMethod && strtolower($context->request->requestMethod) !== strtolower($requestMethod)) {
+				//if @request-method annotation exists and does not match the incoming request method, then it's not a match
+				return $this->handleUnknownAction($context);
+			}
 
+			$refParams = $method->getParameters();
 
 			//create parameters for action, i.e. model binding
 			if (count($refParams) > 0) {
@@ -35,16 +40,15 @@
 
 				foreach ($refParams as $param) {
 					$type = ReflectionUtil::getParameterType($param);
-					$binder = $context->modelBinders->getBinderOrDefault($type);
-					$model = $binder->bindModel(new BindingContext($requestValues, $context, $param->getName(), $type));
-					//var_dump($model);
-					$params[$param->getPosition()] = $model;
+					$params[$param->getPosition()] = $context
+						->modelBinders
+						->getBinderOrDefault($type)
+						->bindModel(new BindingContext($requestValues, $context, $param->getName(), $type));
 				}
 
 				return $method->invokeArgs($this, $params);
 			}
 
-			//echo $method->name . '<br />';
 			return $method->invoke($this);
 		}
 

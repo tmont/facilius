@@ -66,6 +66,13 @@
 			$context = new ActionExecutionContext(new Request(), new RouteMatch(new Route(''), array()), new ModelBinderRegistry(), 'non existent');
 			$controller->execute($context);
 		}
+
+		public function testShouldRespectRequestMethodAnnotation() {
+			$this->setExpectedException('\Facilius\UnknownActionException');
+			$controller = new FakeController1();
+			$context = new ActionExecutionContext(new Request(), new RouteMatch(new Route(''), array()), new ModelBinderRegistry(), 'postOnly');
+			$controller->execute($context);
+		}
 	
 	}
 
@@ -76,6 +83,13 @@
 
 		public function hasParams($foo, array $bar) {
 			return new ContentResult('has params was executed');
+		}
+
+		/**
+		 * @request-method post
+		 */
+		public function postOnly() {
+
 		}
 	}
 
