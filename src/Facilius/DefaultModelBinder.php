@@ -66,7 +66,7 @@
 
 		private function bindTypedArray(BindingContext $context) {
 			$arrayType = substr($context->type, 0, -2);
-			$arrayValueBinder = @$context->actionContext->modelBinders[$arrayType] ?: $this;
+			$arrayValueBinder = $context->actionContext->modelBinders->getBinderOrDefault($arrayType);
 
 			$name = $context->name;
 			$values = $context->getValue($name);
@@ -102,7 +102,7 @@
 			foreach ($properties as $property) {
 				$name = $property->getName();
 				$propertyType = ReflectionUtil::getPropertyType($property, $nullable);
-				$propertyBinder = @$context->actionContext->modelBinders[$propertyType] ?: $this;
+				$propertyBinder = $context->actionContext->modelBinders->getBinderOrDefault($propertyType);
 
 				$potentialValues = $context->values;
 				if (ReflectionUtil::isComplexType($propertyType)) {

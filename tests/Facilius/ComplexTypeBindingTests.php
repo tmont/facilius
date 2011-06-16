@@ -10,6 +10,8 @@
 	use Facilius\Request;
 	use Facilius\RouteMatch;
 	use Facilius\Route;
+	use Facilius\ModelBinderRegistry;
+
 
 	class ComplexTypeBindingTests extends PHPUnit_Framework_TestCase {
 		/**
@@ -22,7 +24,7 @@
 		}
 
 		private function createContext(array $values, $type, $name) {
-			return new BindingContext($values, new ActionExecutionContext(new Request(), new RouteMatch(new Route(''), array())), $name, $type);
+			return new BindingContext($values, new ActionExecutionContext(new Request(), new RouteMatch(new Route(''), array()), new ModelBinderRegistry(), ''), $name, $type);
 		}
 
 		public function testBindObject() {

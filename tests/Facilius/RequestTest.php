@@ -15,7 +15,7 @@
 				'SERVER_PORT' => '8080',
 				'HTTP_HOST' => 'example.com',
 				'SERVER_PROTOCOL' => 'HTTP/1.1',
-				'DOCUMENT_URI' => '/foo.php',
+				'REQUEST_URI' => '/foo.php?foo=bar',
 				'QUERY_STRING' => 'foo=bar'
 			);
 			$cookie = array('cookie' => 'delicious');
@@ -41,7 +41,7 @@
 			$server = array(
 				'HTTP_HOST' => 'example.com',
 				'SERVER_PROTOCOL' => 'HTTP/1.1',
-				'DOCUMENT_URI' => '/foo.php'
+				'REQUEST_URI' => '/foo.php'
 			);
 			$request = new Request(array(), array(), array(), array(), $server);
 
@@ -51,7 +51,7 @@
 		public function testProtocolDefaultsToHttp() {
 			$server = array(
 				'HTTP_HOST' => 'example.com',
-				'DOCUMENT_URI' => '/foo.php'
+				'REQUEST_URI' => '/foo.php'
 			);
 			$request = new Request(array(), array(), array(), array(), $server);
 

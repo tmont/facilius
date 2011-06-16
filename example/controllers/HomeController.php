@@ -10,6 +10,18 @@
 			return $this->view('index');
 		}
 
+		public function form(ExampleModel $model) {
+			return $this->view('form', null, $model);
+		}
+
+	}
+
+	class ExampleModel {
+		public $foo;
+		/**
+		 * @var int
+		 */
+		public $bar;
 	}
 
 ?>

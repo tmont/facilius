@@ -10,6 +10,7 @@
 	use Facilius\Request;
 	use Facilius\RouteMatch;
 	use Facilius\Route;
+	use Facilius\ModelBinderRegistry;
 
 	class ArrayBindingTests extends PHPUnit_Framework_TestCase {
 		/**
@@ -22,7 +23,7 @@
 		}
 
 		private function createContext(array $values, $type) {
-			return new BindingContext($values, new ActionExecutionContext(new Request(), new RouteMatch(new Route(''), array())), 'a', $type);
+			return new BindingContext($values, new ActionExecutionContext(new Request(), new RouteMatch(new Route(''), array()), new ModelBinderRegistry(), ''), 'a', $type);
 		}
 
 		public function testBindDefaultArray() {

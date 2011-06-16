@@ -25,6 +25,11 @@
 		 */
 		protected $debugEnabled = false;
 
+		/**
+		 * @var \Facilius\UrlTransformer
+		 */
+		protected $urlTransformer;
+
 		public function __construct() {
 			$this->binders = new ModelBinderRegistry();
 			$this->response = new Response();
@@ -91,9 +96,6 @@ HTML;
 		protected function onEnd() {}
 
 		public function run(Request $request) {
-			//var_dump($request);
-			//xdebug_dump_superglobals();
-
 			try {
 				$this->onStart();
 				$this->handleRequest($request);
@@ -108,8 +110,18 @@ HTML;
 			}
 		}
 
+		private function transformPath($path) {
+			$segments = explode('/', $path);
+			$transformer = $this->urlTransformer ?: new LowercaseHyphenUrlTransformer();
+			foreach ($segments as &$segment) {
+				$segment = $transformer->untransform($segment);
+			}
+
+			return implode('/', $segments);
+		}
+
 		private function handleRequest(Request $request) {
-			$path = $request->path;
+			$path = $this->transformPath($request->path);
 
 			$routeMatch = $this->findRoute($path);
 
@@ -124,7 +136,7 @@ HTML;
 			$controller = $this->createController($controllerName);
 			$result = $controller->execute(new ActionExecutionContext($request, $routeMatch, $this->binders, $action));
 			if (!($result instanceof ActionResult)) {
-				throw new LogicException('The action did not return an instance of \Facilius\ActionResult');
+				throw new LogicException("The action \"$controllerName::$action\" did not return an instance of \\Facilius\\ActionResult");
 			}
 
 			$result->execute(new ActionResultContext($action, $request, $this->response, $routeMatch));

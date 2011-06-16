@@ -10,7 +10,7 @@
 		private $transformer;
 
 		public function __construct() {
-			$this->transformer = new \Facilius\LowercaseHyphenUrlTransformer();
+			$this->transformer = new LowercaseHyphenUrlTransformer();
 		}
 
 		public function testReplaceCapitalLettersWithHyphensAndLowercaseLetters() {

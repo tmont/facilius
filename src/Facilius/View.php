@@ -20,7 +20,7 @@
 		private $child;
 
 		public function __construct($path, View $child = null) {
-			$this->path = $path;
+			$this->path = realpath($path);
 			$this->sections = array();
 			$this->child = $child;
 		}
@@ -33,8 +33,11 @@
 			ob_start();
 			require $this->path;
 
+			$extraBuffer = ob_get_clean();
 			if ($this->currentSection) {
-				$this->sections[$this->currentSection] = ob_get_clean();
+				$this->sections[$this->currentSection] = $extraBuffer;
+			} else {
+				echo $extraBuffer;
 			}
 
 			$this->currentSection = null;
@@ -44,7 +47,7 @@
 			}
 		}
 
-		public function renderSection($name, $trimWhitespace = true) {
+		public function renderSection($name, $trimWhitespace = false) {
 			if (!isset($this->child, $this->child->sections[$name])) {
 				throw new InvalidArgumentException("The section \"$name\" is undefined");
 			}
@@ -53,10 +56,14 @@
 		}
 
 		public function section($name) {
+			$buffer = ob_get_contents();
 			if ($this->currentSection) {
-				$this->sections[$this->currentSection] = ob_get_contents();
-				ob_clean();
+				$this->sections[$this->currentSection] = $buffer;
+			} else if (trim($buffer)) {
+				throw new RuntimeException('Cannot have non-whitespace data outside of a section');
 			}
+
+			ob_clean();
 
 			$this->currentSection = $name;
 		}

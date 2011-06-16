@@ -27,6 +27,7 @@
 			$method = new ReflectionMethod($this, $context->action);
 			$refParams = $method->getParameters();
 
+
 			//create parameters for action, i.e. model binding
 			if (count($refParams) > 0) {
 				$params = array();
@@ -35,12 +36,15 @@
 				foreach ($refParams as $param) {
 					$type = ReflectionUtil::getParameterType($param);
 					$binder = $context->modelBinders->getBinderOrDefault($type);
-					$params[$param->getPosition()] = $binder->bindModel(new BindingContext($requestValues, $context, $param->getName(), $type));
+					$model = $binder->bindModel(new BindingContext($requestValues, $context, $param->getName(), $type));
+					//var_dump($model);
+					$params[$param->getPosition()] = $model;
 				}
 
 				return $method->invokeArgs($this, $params);
 			}
 
+			//echo $method->name . '<br />';
 			return $method->invoke($this);
 		}
 

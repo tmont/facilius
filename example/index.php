@@ -16,7 +16,6 @@
 			return true;
 		}
 
-		echo $file . '<br />';
 		return false;
 	});
 
@@ -29,7 +28,22 @@
 		}
 
 		protected function onStart() {
-			$this->registerRoute('/(?:(?<controller>.+)(?:/(?<action>.+)(?:/(?<id>.+))?)?)?', array('controller' => 'Home', 'action' => 'Index'), 'default');
+			$pattern = preg_replace('/\s/', '', '
+				/
+				(?:
+					(?<controller>[^/]+)
+					(?:
+						/
+						(?<action>[^/]+)
+						(?:
+							/
+							(?<id>.+)
+						)?
+					)?
+				)?
+			');
+
+			$this->registerRoute($pattern, array('controller' => 'Home', 'action' => 'Index'), 'default');
 		}
 
 		/**
