@@ -14,4 +14,4 @@
 
 	<h2>Stack Trace</h2>
 	<pre><?php echo htmlentities($model->exception->getTraceAsString(), ENT_QUOTES, 'UTF-8'); ?></pre>
-<?php } ?>>
+<?php } ?>

@@ -68,7 +68,7 @@
 				)?
 			');
 
-			$this->registerRoute($pattern, array('controller' => 'Home', 'action' => 'Index'), 'default');
+			$this->registerRoute($pattern, array('controller' => 'Home', 'action' => 'index'), 'default');
 		}
 
 		/**
