@@ -59,8 +59,8 @@
 			return $this->viewPath;
 		}
 
-		protected final function registerRoute($pattern, array $defaults = array(), $routeName = null) {
-			$this->routes[] = new Route($pattern, $defaults, $routeName);
+		protected final function registerRoute($pattern, array $defaults = array(), array $constraints = array(), $routeName = null) {
+			$this->routes[] = new Route($pattern, $defaults, $constraints, $routeName);
 			return $this;
 		}
 

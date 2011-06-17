@@ -18,7 +18,12 @@
 		}
 
 		public function match($path) {
-			return RouteParser::parse($this->pattern, trim($path, '/'), $this->defaults, $this->constraints);
+			$data = RouteParser::parse($this->pattern, trim($path, '/'), $this->defaults, $this->constraints);
+			if (!$data) {
+				return null;
+			}
+
+			return new RouteMatch($this, $data);
 		}
 
 		public function getName() {

@@ -53,22 +53,7 @@
 		}
 
 		protected function onStart() {
-			$pattern = preg_replace('/\s/', '', '
-				/
-				(?:
-					(?<controller>[^/]+)
-					(?:
-						/
-						(?<action>[^/]+)
-						(?:
-							/
-							(?<id>.+)
-						)?
-					)?
-				)?
-			');
-
-			$this->registerRoute($pattern, array('controller' => 'Home', 'action' => 'index'), 'default');
+			$this->registerRoute('{controller}/{action}/{id}', array('controller' => 'Home', 'action' => 'index', 'id' => null), array(), 'default');
 		}
 
 		/**
