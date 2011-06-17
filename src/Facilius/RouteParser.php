@@ -15,8 +15,8 @@
                 throw new InvalidArgumentException('routeUrl must be a string');
             }
 
-            if (!empty($routeUrl) && (in_array($routeUrl[0], array('/', '~')) || strpos($routeUrl, '?') !== false || strpos($routeUrl, '@') !== false)) {
-                throw new InvalidArgumentException('The route url cannot start with "/" or "~" and cannot contain "?" or "@".');
+            if (!empty($routeUrl) && (in_array($routeUrl[0], array('/', '~')) || strpos($routeUrl, '?') !== false)) {
+                throw new InvalidArgumentException('The route url cannot start with "/" or "~" and cannot contain "?".');
             }
 
             $regex = self::routeUrlToRegex($routeUrl, $defaults, $constraints);

@@ -26,6 +26,11 @@
 		protected $debugEnabled = false;
 
 		/**
+		 * @var Request
+		 */
+		private $currentRequest;
+
+		/**
 		 * @var \Facilius\UrlTransformer
 		 */
 		protected $urlTransformer;
@@ -50,6 +55,20 @@
 		 */
 		protected final function getResponse() {
 			return $this->response;
+		}
+
+		/**
+		 * @return \Facilius\Request
+		 */
+		protected final function getRequest() {
+			return $this->currentRequest;
+		}
+
+		/**
+		 * @return Route[]
+		 */
+		protected final function getRoutes() {
+			return $this->routes;
 		}
 
 		/**
@@ -101,6 +120,8 @@ HTML;
 		protected function onEnd() {}
 
 		public function run(Request $request) {
+			$this->currentRequest = $request;
+			
 			ob_start();
 			try {
 				$this->onStart();
@@ -151,7 +172,7 @@ HTML;
 				throw new LogicException("The action \"$controllerName::$action\" did not return an instance of \\Facilius\\ActionResult");
 			}
 
-			$result->execute(new ActionResultContext($action, $request, $this->response, $routeMatch));
+			$result->execute(new ActionResultContext($action, $request, $this->response, $routeMatch, $controller, $this->routes));
 			$this->response->flush();
 		}
 

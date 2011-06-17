@@ -25,10 +25,13 @@
 			$this->child = $child;
 		}
 
-		public function render($model) {
+		public function render(RenderingContext $context) {
 			if (!is_file($this->path) || !is_readable($this->path)) {
 				throw new RuntimeException("The path \"$this->path\" is not a file or is not readable");
 			}
+
+			$html = new HtmlHelper($context);
+			$model = $context->model;
 
 			ob_start();
 			require $this->path;
@@ -43,7 +46,7 @@
 			$this->currentSection = null;
 
 			if ($this->parent) {
-				$this->parent->render($model);
+				$this->parent->render($context);
 			}
 		}
 
@@ -72,5 +75,17 @@
 			$this->parent = new self($path, $this);
 		}
 	}
+
+	class ViewHelper {
+		public $path;
+		public $context;
+
+		public function __construct($path, $context) {
+			$this->path = $path;
+			$this->context = $context;
+		}
+	}
+
+
 
 ?>

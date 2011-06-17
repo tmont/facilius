@@ -8,7 +8,7 @@ OH HAI!
 			This is the body. How do you like it?
 		</p>
 
-		<form method="post" action="/home/form">
+		<form method="post" action="<?php echo $html->actionLink('form', 'home'); ?>">
 			<label for="foo">Foo:</label><input type="text" name="foo" id="foo" /><br />
 			<label for="bar">Bar:</label><input type="text" name="bar" id="bar" /><br />
 			<input type="submit" />

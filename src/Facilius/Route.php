@@ -31,6 +31,7 @@
 		}
 
 		public function generateUrl(array $routeValues) {
+			$routeValues = array_merge($this->defaults, $routeValues);
 			$url = null;
 
             $groupRegex = '@(?=\{)\{(.*?)\}(?!\})@';
@@ -38,8 +39,8 @@
             $expectedValues = @$expectedValues[1] ?: array();
 
             if (empty($expectedValues)) {
-                if (empty($routeValues) || $this->defaults == $routeValues) {
-                    $url = $this->pattern;
+	            if (empty($routeValues) || $this->defaults == $routeValues) {
+	                $url = $this->pattern;
                 }
             } else if ($this->matchesRouteValues($expectedValues, $routeValues)) {
                 //if the value is the same as the default value, then we don't need to append it to the URL,
@@ -60,7 +61,7 @@
                         $valuesForUrl[$expectedValue] = @$routeValues[$expectedValue] ?: '';
                     }
 
-                    $url = $this->pattern;
+                    $url = '/' . $this->pattern;
                     foreach ($valuesForUrl as $value => $valueForUrl) {
                         $url = preg_replace('/(?=\{)\{' . $value . '\}(?!\})/', $valueForUrl, $url);
                     }
@@ -81,10 +82,11 @@
             foreach ($expectedValues as $expectedValue) {
                 if (!array_key_exists($expectedValue, $routeValues)) {
                     //an unused expected value
-                    return false;
+	                echo $expectedValue;
+	                return false;
                 } else if (isset($this->constraints[$expectedValue]) && !preg_match('@' . $this->constraints[$expectedValue] . '@', $routeValues[$expectedValue])) {
-                    //constraint doesn't match
-                    return false;
+	                //constraint doesn't match
+	                return false;
                 }
             }
 

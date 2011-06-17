@@ -9,6 +9,7 @@
 	use Facilius\View;
 	use Facilius\UnknownActionException;
 	use Facilius\ControllerConstructionException;
+	use Facilius\RenderingContext;
 	use Exception;
 
 	require_once '../src/Facilius/bootstrap.php';
@@ -49,7 +50,8 @@
 			}
 
 			$view = new View($this->getViewPath() . $viewPath);
-			$view->render(new ErrorModel($e, $this->debugEnabled));
+			$context = new RenderingContext($view, $this->getRequest(), $this->getRoutes(), null, new ErrorModel($e, $this->debugEnabled));
+			$view->render($context);
 		}
 
 		protected function onStart() {

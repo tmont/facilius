@@ -13,7 +13,8 @@
 		}
 
 		public function execute(ActionResultContext $context) {
-			$this->view->render($this->model);
+			$renderingContext = new RenderingContext($this->view, $context->request, $context->routes, $context->controller, $this->model);
+			$this->view->render($renderingContext);
 		}
 
 	}
