@@ -93,19 +93,6 @@
                 }
             }
 
-            //go through route values, and verify that they don't override defaults, but only for values that are not expected!
-            //the point is that the expected values are the dynamic part of the route, but if they aren't given, then they
-            //shouldn't be overwritten by the given route values
-//            foreach ($routeValues as $key => $routeValue) {
-//                if (in_array($key, $expectedValues)) {
-//                    continue;
-//                }
-//
-//                if (isset($this->defaults[$key]) && $routeValue !== $this->defaults[$key]) {
-//                    return false;
-//                }
-//            }
-
             return true;
         }
 

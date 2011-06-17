@@ -57,6 +57,25 @@
 			self::assertNull($route->generateUrl(array()));
 		}
 
+		public function testShouldMatchEmptyRoute() {
+			$route = new Route('');
+			self::assertEquals('/', $route->generateUrl(array()));
+		}
+
+		public function testShouldMatchRoute() {
+			$route = new Route('{foo}');
+			$match = $route->match('/bar');
+			self::assertNotNull($match);
+			self::assertInstanceOf('\Facilius\RouteMatch', $match);
+			self::assertEquals('bar', $match['foo']);
+		}
+
+		public function testShouldNotMatchRoute() {
+			$route = new Route('{foo}/{bar}');
+			$match = $route->match('/bar');
+			self::assertNull($match);
+		}
+
 	}
 
 ?>
