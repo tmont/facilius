@@ -11,6 +11,10 @@
 		private $constraints;
 
 		public function __construct($pattern, array $defaults = array(), array $constraints = array(), $routeName = null) {
+			if (!empty($pattern) && (in_array($pattern[0], array('/', '~')) || strpos($pattern, '?') !== false)) {
+                throw new InvalidArgumentException('The route url cannot start with "/" or "~" and cannot contain "?".');
+            }
+
 			$this->pattern = $pattern;
 			$this->defaults = $defaults;
 			$this->name = $routeName;
@@ -61,7 +65,7 @@
                         $valuesForUrl[$expectedValue] = @$routeValues[$expectedValue] ?: '';
                     }
 
-                    $url = '/' . $this->pattern;
+                    $url .= $this->pattern;
                     foreach ($valuesForUrl as $value => $valueForUrl) {
                         $url = preg_replace('/(?=\{)\{' . $value . '\}(?!\})/', $valueForUrl, $url);
                     }
@@ -75,16 +79,15 @@
                 }
             }
 
-            return $url;
+            return $url === null ? null : '/' . $url;
 		}
 
 		protected function matchesRouteValues(array $expectedValues, array $routeValues) {
             foreach ($expectedValues as $expectedValue) {
                 if (!array_key_exists($expectedValue, $routeValues)) {
                     //an unused expected value
-	                echo $expectedValue;
 	                return false;
-                } else if (isset($this->constraints[$expectedValue]) && !preg_match('@' . $this->constraints[$expectedValue] . '@', $routeValues[$expectedValue])) {
+                } else if (isset($this->constraints[$expectedValue]) && !preg_match('@^(?:' . $this->constraints[$expectedValue] . ')$@', $routeValues[$expectedValue])) {
 	                //constraint doesn't match
 	                return false;
                 }
@@ -93,15 +96,15 @@
             //go through route values, and verify that they don't override defaults, but only for values that are not expected!
             //the point is that the expected values are the dynamic part of the route, but if they aren't given, then they
             //shouldn't be overwritten by the given route values
-            foreach ($routeValues as $key => $routeValue) {
-                if (in_array($key, $expectedValues)) {
-                    continue;
-                }
-
-                if (isset($this->defaults[$key]) && $routeValue !== $this->defaults[$key]) {
-                    return false;
-                }
-            }
+//            foreach ($routeValues as $key => $routeValue) {
+//                if (in_array($key, $expectedValues)) {
+//                    continue;
+//                }
+//
+//                if (isset($this->defaults[$key]) && $routeValue !== $this->defaults[$key]) {
+//                    return false;
+//                }
+//            }
 
             return true;
         }

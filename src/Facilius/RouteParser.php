@@ -11,14 +11,6 @@
         //@codeCoverageIgnoreEnd
 
         public static function parse($routeUrl, $requestPath, array $defaults, array $constraints) {
-            if (!is_string($routeUrl)) {
-                throw new InvalidArgumentException('routeUrl must be a string');
-            }
-
-            if (!empty($routeUrl) && (in_array($routeUrl[0], array('/', '~')) || strpos($routeUrl, '?') !== false)) {
-                throw new InvalidArgumentException('The route url cannot start with "/" or "~" and cannot contain "?".');
-            }
-
             $regex = self::routeUrlToRegex($routeUrl, $defaults, $constraints);
 
             $result = preg_match($regex, $requestPath, $values);
