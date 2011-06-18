@@ -7,21 +7,6 @@
 
     class RouteParserTests extends PHPUnit_Framework_TestCase {
 
-        public function testParseWithInvalidRouteUrl() {
-            $this->setExpectedException('InvalidArgumentException');
-            RouteParser::parse(5, 'foo', array(), array());
-        }
-
-        public function testParseWithRouteUrlThatStartsWithSlash() {
-            $this->setExpectedException('InvalidArgumentException');
-            RouteParser::parse('/foo', 'foo', array(), array());
-        }
-
-        public function testParseWithRouteUrlThatStartsWithTilde() {
-            $this->setExpectedException('InvalidArgumentException');
-            RouteParser::parse('~/foo', 'foo', array(), array());
-        }
-
         public function testParseWithStaticUrl() {
             $url = 'foo/bar';
             self::assertNull(RouteParser::parse($url, 'foo', array(), array()));
