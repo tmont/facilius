@@ -39,6 +39,11 @@
 			self::assertEquals('/foo', $route->generateUrl(array('controller' => 'foo')));
 		}
 
+		public function testShouldTransformRouteValues() {
+			$route = new Route('{foo}');
+			self::assertEquals('/foo-bar', $route->generateUrl(array('foo' => 'FooBar')));
+		}
+
 		public function testShouldNotMatchIfConstraintsFail() {
 			$route = new Route('{foo}', array('foo' => 'foo'), array('foo' => 'foo|bar'));
 			self::assertNull($route->generateUrl(array('foo' => 'baz')));

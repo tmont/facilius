@@ -20,7 +20,7 @@
 		private $child;
 
 		public function __construct($path, View $child = null) {
-			$this->path = realpath($path);
+			$this->path = $path;
 			$this->sections = array();
 			$this->child = $child;
 		}
@@ -52,7 +52,7 @@
 
 		public function renderSection($name, $trimWhitespace = false) {
 			if (!isset($this->child, $this->child->sections[$name])) {
-				throw new InvalidArgumentException("The section \"$name\" is undefined");
+				return;
 			}
 
 			echo $trimWhitespace ? trim($this->child->sections[$name]) : $this->child->sections[$name];

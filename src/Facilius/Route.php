@@ -10,6 +10,11 @@
 		private $name;
 		private $constraints;
 
+		/**
+		 * @var UrlTransformer
+		 */
+		private $urlTransformer;
+
 		public function __construct($pattern, array $defaults = array(), array $constraints = array(), $routeName = null) {
 			if (!empty($pattern) && (in_array($pattern[0], array('/', '~')) || strpos($pattern, '?') !== false)) {
                 throw new InvalidArgumentException('The route url cannot start with "/" or "~" and cannot contain "?".');
@@ -19,6 +24,11 @@
 			$this->defaults = $defaults;
 			$this->name = $routeName;
 			$this->constraints = $constraints;
+			$this->urlTransformer = new LowercaseHyphenUrlTransformer();
+		}
+
+		public function setUrlTransformer(UrlTransformer $urlTransformer) {
+			$this->urlTransformer = $urlTransformer;
 		}
 
 		public function match($path) {
@@ -67,7 +77,7 @@
 
                     $url .= $this->pattern;
                     foreach ($valuesForUrl as $value => $valueForUrl) {
-                        $url = preg_replace('/(?=\{)\{' . $value . '\}(?!\})/', $valueForUrl, $url);
+                        $url = preg_replace('/(?=\{)\{' . $value . '\}(?!\})/', $this->urlTransformer->transform($valueForUrl), $url);
                     }
 
                     $url = rtrim($url, '/');

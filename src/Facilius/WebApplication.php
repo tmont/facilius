@@ -152,6 +152,7 @@ HTML;
 
 		private function handleRequest(Request $request) {
 			$path = $this->transformPath($request->path);
+			$path = $request->path;
 			$routeMatch = $this->findRoute($path);
 
 			if (!$routeMatch) {
