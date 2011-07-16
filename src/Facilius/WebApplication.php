@@ -109,9 +109,11 @@ $errorMessage
 </html>
 HTML;
 
+			$statusCode = $e instanceof HttpException ? $e->getStatusCode() : 500;
+
 			$this->response
 				->clear()
-				->setStatus(500)
+				->setStatus($statusCode)
 				->write($html)
 				->flush();
 		}
@@ -151,7 +153,6 @@ HTML;
 		}
 
 		private function handleRequest(Request $request) {
-			$path = $this->transformPath($request->path);
 			$path = $request->path;
 			$routeMatch = $this->findRoute($path);
 
