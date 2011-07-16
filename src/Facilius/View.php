@@ -85,7 +85,4 @@
 			$this->context = $context;
 		}
 	}
-
-
-
 ?>

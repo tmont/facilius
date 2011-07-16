@@ -23,6 +23,10 @@
 		public function getRoute() {
 			return $this->route;
 		}
+
+		public function getData() {
+			return $this->data;
+		}
 	}
 	
 ?>

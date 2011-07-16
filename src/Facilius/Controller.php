@@ -36,7 +36,7 @@
 			//create parameters for action, i.e. model binding
 			if (count($refParams) > 0) {
 				$params = array();
-				$requestValues = array_merge($context->request->queryString->toArray(), $context->request->post->toArray());
+				$requestValues = array_merge($context->routeMatch->getData(), $context->request->queryString->toArray(), $context->request->post->toArray());
 
 				foreach ($refParams as $param) {
 					$type = ReflectionUtil::getParameterType($param);
