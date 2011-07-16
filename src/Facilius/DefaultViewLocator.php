@@ -11,13 +11,18 @@
 		}
 
 		public function locate($name, $controller) {
-			$path = "$this->baseDir/views/$controller/$name.php";
-			if (is_file($path)) {
-				return $path;
+			$paths = array(
+				"$this->baseDir/views/$controller/$name.php",
+				"$this->baseDir/views/shared/$name.php"
+			);
+
+			foreach ($paths as $path) {
+				if (is_file($path)) {
+					return $path;
+				}
 			}
 
-			return "$this->baseDir/views/shared/$name.php";
+			throw new ViewNotFoundException($name, $paths);
 		}
 	}
-	
 ?>

@@ -15,6 +15,10 @@
 			$this->viewLocator = $viewLocator;
 		}
 
+		public function getViewLocator() {
+			return $this->viewLocator;
+		}
+
 		/**
 		 * @param ActionExecutionContext $context
 		 * @return ActionResult
@@ -65,7 +69,7 @@
 			return new ViewResult(new View($path), $model);
 		}
 
-		private function getControllerName() {
+		public function getControllerName() {
 			$parts = explode('\\', get_class($this));
 			$controller = end($parts);
 			return strtolower(substr($controller, 0, strlen($controller) - 10));

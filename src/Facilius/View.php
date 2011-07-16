@@ -15,7 +15,7 @@
 		 */
 		private $parent;
 		/**
-		 * @var \Facilius\View|null
+		 * @var View|null
 		 */
 		private $child;
 
@@ -50,7 +50,7 @@
 			}
 		}
 
-		public function renderSection($name, $trimWhitespace = false) {
+		private function renderSection($name, $trimWhitespace = false) {
 			if (!isset($this->child, $this->child->sections[$name])) {
 				return;
 			}
@@ -58,7 +58,7 @@
 			echo $trimWhitespace ? trim($this->child->sections[$name]) : $this->child->sections[$name];
 		}
 
-		public function section($name) {
+		private function section($name) {
 			$buffer = ob_get_contents();
 			if ($this->currentSection) {
 				$this->sections[$this->currentSection] = $buffer;
@@ -73,16 +73,6 @@
 
 		public function setParent($path) {
 			$this->parent = new self($path, $this);
-		}
-	}
-
-	class ViewHelper {
-		public $path;
-		public $context;
-
-		public function __construct($path, $context) {
-			$this->path = $path;
-			$this->context = $context;
 		}
 	}
 ?>

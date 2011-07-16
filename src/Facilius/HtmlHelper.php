@@ -36,7 +36,15 @@
 			return '';
 		}
 
-		
+		public function renderPartial($name, $controller = null, $model = null) {
+			$path = $this->context->viewLocator->locate($name, $controller ?: $this->context->controller->getControllerName());
+			$view = new View($path);
+			$view->render(new RenderingContext($view, $this->context->request, $this->context->routes, $this->context->controller, $model));
+		}
+
+		public function encode($text) {
+			return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+		}
 
 	}
 
