@@ -22,9 +22,15 @@
 		 * @param array $routeValues
 		 * @return string
 		 */
-		public function actionLink($action, $controller, array $routeValues = array()) {
+		public function actionLink($text, $action, $controller = null, array $routeValues = array()) {
+			return sprintf('<a href="%s">%s</a>', $this->actionUrl($action, $controller, $routeValues), $this->encode($text));
+		}
+
+		public function actionUrl($action, $controller = null, array $routeValues = array()) {
 			$routeValues['action'] = $action;
-			$routeValues['controller'] = $controller;
+			$routeValues['controller'] = $controller ?: $this->context->controller->getControllerName();
+
+			//var_dump($routeValues);
 
 			foreach ($this->context->routes as $route) {
 				$url = $route->generateUrl($routeValues);
