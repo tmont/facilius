@@ -161,7 +161,7 @@ HTML;
 			}
 
 			$controllerName = $this->transformPath(trim($routeMatch['controller']));
-			$action = trim($routeMatch['action']);
+			$action = $this->transformPath(trim($routeMatch['action']));
 			self::verifyControllerAndAction($routeMatch->getRoute()->getName(), $path, $controllerName, $action);
 
 			$controller = $this->createController($controllerName);
