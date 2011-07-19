@@ -13,9 +13,9 @@
 			$this->attemptedLocations = $attemptedLocations;
 
 			parent::__construct(sprintf(
-				'Unable to locate the view "%s". Searched the following locations: %s',
+				'Unable to locate the view "%s". The following locations were searched: %s',
 				$viewName,
-				array_reduce($this->attemptedLocations, function($current, $next) { return "$current, $next"; })
+				implode(', ', $this->attemptedLocations)
 			));
 		}
 	}
