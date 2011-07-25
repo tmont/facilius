@@ -114,6 +114,7 @@
                 throw new RuntimeException('Invalid route: a grouping was not closed');
             }
 
+	        //echo htmlspecialchars($regex) . '<br />';
             return "@^$regex$@";
         }
 

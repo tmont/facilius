@@ -61,7 +61,7 @@
 				'cookie' => new ReadOnlyArray($cookie),
 				'files' => new ReadOnlyArray($files),
 				'server' => new ReadOnlyArray($server),
-				'requestMethod' => @$server['REQUEST_METHOD'] ?: 'GET',
+				'requestMethod' => strtoupper(@$server['REQUEST_METHOD'] ?: 'GET'),
 				'ipAddress' => @$server['HTTP_X_FORWARDED_FOR'] ?: @$server['REMOTE_ADDR'],
 				'proxied' => isset($server['HTTP_X_FORWARDED_FOR'])
 			);

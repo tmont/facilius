@@ -21,7 +21,7 @@
 		}
 
 		public function setHeader($name, $value) {
-			if (strpos($value, "\r\n") >= 0 || strpos($name, "\r\n") >= 0) {
+			if (strpos($value, "\r\n") !== false || strpos($name, "\r\n") !== false) {
 				throw new InvalidArgumentException('Headers cannot contain the string "\r\n"');
 			}
 

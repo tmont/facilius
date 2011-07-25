@@ -30,8 +30,6 @@
 			$routeValues['action'] = $action;
 			$routeValues['controller'] = $controller ?: $this->context->controller->getControllerName();
 
-			//var_dump($routeValues);
-
 			foreach ($this->context->routes as $route) {
 				$url = $route->generateUrl($routeValues);
 				if ($url !== null) {
