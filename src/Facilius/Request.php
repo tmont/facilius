@@ -61,6 +61,7 @@
 				'cookie' => new ReadOnlyArray($cookie),
 				'files' => new ReadOnlyArray($files),
 				'server' => new ReadOnlyArray($server),
+				'referrer' => @$server['HTTP_REFERER'],
 				'requestMethod' => strtoupper(@$server['REQUEST_METHOD'] ?: 'GET'),
 				'ipAddress' => @$server['HTTP_X_FORWARDED_FOR'] ?: @$server['REMOTE_ADDR'],
 				'proxied' => isset($server['HTTP_X_FORWARDED_FOR'])
@@ -92,6 +93,7 @@
 				case 'server':
 				case 'requestMethod':
 				case 'ipAddress':
+				case 'referrer':
 					return $this->readonlyData[$name];
 				case 'path':
 				case 'host':
