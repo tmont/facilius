@@ -121,13 +121,13 @@ HTML;
 		protected function onStart() {}
 		protected function onEnd() {}
 
-		public function run(Request $request) {
+		public function run(Request $request, array $session = array()) {
 			$this->currentRequest = $request;
 			
 			ob_start();
 			try {
 				$this->onStart();
-				$this->handleRequest($request);
+				$this->handleRequest($request, $session);
 			} catch (Exception $e) {
 				$this->onError($e);
 			}
@@ -152,7 +152,7 @@ HTML;
 			return implode('/', $segments);
 		}
 
-		private function handleRequest(Request $request) {
+		private function handleRequest(Request $request, array $session) {
 			$path = $request->path;
 			$routeMatch = $this->findRoute($path);
 
@@ -169,7 +169,7 @@ HTML;
 				throw new ControllerConstructionException("Unable to create controller for path \"$path\"");
 			}
 
-			$result = $controller->execute(new ActionExecutionContext($request, $routeMatch, $this->binders, $action));
+			$result = $controller->execute(new ActionExecutionContext($request, $session, $routeMatch, $this->binders, $action));
 			if (!($result instanceof ActionResult)) {
 				throw new LogicException("The action \"$controllerName::$action\" did not return an instance of \\Facilius\\ActionResult");
 			}

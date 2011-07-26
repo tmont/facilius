@@ -4,6 +4,7 @@
 
 	class ActionExecutionContext {
 		public $request;
+		public $session;
 		public $routeMatch;
 		/**
 		 * @var \Facilius\ModelBinderRegistry
@@ -14,8 +15,9 @@
 		 */
 		public $action;
 
-		public function __construct(Request $request, RouteMatch $routeMatch, ModelBinderRegistry $binderRegistry, $action) {
+		public function __construct(Request $request, array $session, RouteMatch $routeMatch, ModelBinderRegistry $binderRegistry, $action) {
 			$this->request = $request;
+			$this->session = $session;
 			$this->routeMatch = $routeMatch;
 			$this->modelBinders = $binderRegistry;
 			$this->action = $action;

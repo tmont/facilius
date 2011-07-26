@@ -12,16 +12,29 @@
 		private $viewLocator;
 
 		/**
+		 * @var \Facilius\ActionFilterFactory
+		 */
+		private $actionFilterFactory;
+
+		/**
 		 * @var ActionExecutionContext
 		 */
 		private $currentContext;
 
-		public function setViewLocator(ViewLocator $viewLocator) {
+		public function __construct() {
+			$this->actionFilterFactory = new DefaultActionFilterFactory();
+		}
+
+		public final function setViewLocator(ViewLocator $viewLocator) {
 			$this->viewLocator = $viewLocator;
 		}
 
-		public function getViewLocator() {
+		public final function getViewLocator() {
 			return $this->viewLocator;
+		}
+
+		public final function setActionFilterFactory(ActionFilterFactory $actionFilterFactory) {
+			$this->actionFilterFactory = $actionFilterFactory;
 		}
 
 		protected final function getContext() {
@@ -42,8 +55,13 @@
 			$method = new ReflectionMethod($this, $context->action);
 			$requestMethod = ReflectionUtil::getRequestMethod($method);
 			if ($requestMethod && strtolower($context->request->requestMethod) !== strtolower($requestMethod)) {
-				//if @request-method annotation exists and does not match the incoming request method, then it's not a match
+				//if @request-method annotation exists and does not match the incoming request method, then the action is not a match
 				return $this->handleUnknownAction($context);
+			}
+
+			$beforeFilters = $this->getActionFilters($method, 'before');
+			foreach ($beforeFilters as $filter) {
+				$filter->execute($context);
 			}
 
 			$refParams = $method->getParameters();
@@ -64,7 +82,30 @@
 				return $method->invokeArgs($this, $params);
 			}
 
-			return $method->invoke($this);
+			$executedContext = new ActionExecutedContext($context, $method->invoke($this), $method);
+
+			$afterFilters = $this->getActionFilters($method, 'after');
+			foreach ($afterFilters as $filter) {
+				$filter->execute($executedContext);
+			}
+
+			return $executedContext->actionResult;
+		}
+
+		/**
+		 * @param \ReflectionMethod $method
+		 * @param string $type
+		 * @return BeforeActionFilter[]|\Facilius\AfterActionFilter[]
+		 */
+		private function getActionFilters(ReflectionMethod $method, $type) {
+			$docCommentValues = ReflectionUtil::getDocCommentValues($method);
+			$filterNames = @$docCommentValues[$type . '-filter'] ?: array();
+			$filters = array();
+			foreach ($filterNames as $filterName) {
+				$filters[] = $this->actionFilterFactory->create($filterName);
+			}
+
+			return $filters;
 		}
 
 		protected function handleUnknownAction(ActionExecutionContext $context) {

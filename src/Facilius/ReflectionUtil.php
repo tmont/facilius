@@ -8,6 +8,8 @@
 
 		const DEFAULT_TYPE = 'string';
 
+		private static $docCommentCache = array();
+
 		/**
 		 * @return string|null
 		 */
@@ -48,8 +50,8 @@
         public static function getParameterType(ReflectionParameter $parameter) {
             if ($parameter->isArray()) {
                 return 'array';
-            } else if ($parameter->getClass()) {
-                return $parameter->getClass()->getName();
+            } else if ($class = $parameter->getClass()) {
+                return $class->getName();
             }
 
             $docValues = self::getDocCommentValues($parameter);
@@ -85,13 +87,17 @@
                 return array();
             }
 
+			if (isset(self::$docCommentCache[$doc])) {
+				return self::$docCommentCache[$doc];
+			}
+
             preg_match_all('/^[\s\*]*@(.+?)(?:\s|$)(?:\s*)?(.+)?/m', $doc, $values);
             if (!isset($values[2]) || empty($values[2])) {
                 //no matches
                 return array();
             }
 
-            return self::combineDocCommentValues($values[1], $values[2]);
+            return (self::$docCommentCache[$doc] = self::combineDocCommentValues($values[1], $values[2]));
         }
 
 		private static function combineDocCommentValues(array $keys, array $values) {
