@@ -46,7 +46,7 @@
 				case 'bool':
 				case 'boolean':
 					$value = strtolower($value);
-					if ($value === 'true') {
+					if ($value === 'true' || $value === 'on') {
 						return true;
 					}
 					if ($value === 'false') {
@@ -91,9 +91,11 @@
 			$class = new ReflectionClass($type);
 			$ctor = $class->getConstructor();
 
-			if ($ctor && count($ctor->getParameters()) > 0) {
-				//constructor has parameters, so we can't instantiate this without some inside knowledge
-				return null;
+			if ($ctor && count($params = $ctor->getParameters()) > 0) {
+				if (!array_reduce($params, function($current, $next) { return $current && $next->isOptional(); }, true)) {
+					//constructor has non-optional parameters, so we can't instantiate this without some inside knowledge
+					return null;
+				}
 			}
 
 			$object = $class->newInstance();

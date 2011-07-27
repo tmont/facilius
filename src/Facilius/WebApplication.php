@@ -169,7 +169,7 @@ HTML;
 				throw new ControllerConstructionException("Unable to create controller for path \"$path\"");
 			}
 
-			$result = $controller->execute(new ActionExecutionContext($request, $session, $routeMatch, $this->binders, $action));
+			$result = $controller->execute(new ActionExecutionContext($request, $session, $this->routes, $routeMatch, $this->binders, $action));
 			if (!($result instanceof ActionResult)) {
 				throw new LogicException("The action \"$controllerName::$action\" did not return an instance of \\Facilius\\ActionResult");
 			}

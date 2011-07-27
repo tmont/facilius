@@ -112,6 +112,12 @@
 			throw new UnknownActionException(get_class($this), $context->action);
 		}
 
+		public function getControllerName() {
+			$parts = explode('\\', get_class($this));
+			$controller = end($parts);
+			return strtolower(substr($controller, 0, strlen($controller) - 10));
+		}
+
 		protected function view($name = null, $controller = null, $model = null) {
 			if (!$this->viewLocator) {
 				throw new Exception('View locator has not been set. Please reconfigure your app\'s createController() method.');
@@ -125,10 +131,23 @@
 			return new RedirectResult($url, $httpStatusCode);
 		}
 
-		public function getControllerName() {
-			$parts = explode('\\', get_class($this));
-			$controller = end($parts);
-			return strtolower(substr($controller, 0, strlen($controller) - 10));
+		protected function redirectToAction($action, $controller = null, array $routeValues = array(), $httpStatusCode = 302) {
+			$routeValues['action'] = $action;
+			$routeValues['controller'] = $controller ?: $this->getControllerName();
+
+			$url = '';
+			foreach ($this->currentContext->routes as $route) {
+				$url = $route->generateUrl($routeValues);
+				if ($url !== null) {
+					break;
+				}
+			}
+
+			return $this->redirect($url ?: '', $httpStatusCode);
+		}
+
+		public function json($decodedData) {
+			return new JsonResult($decodedData);
 		}
 
 	}

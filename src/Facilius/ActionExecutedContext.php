@@ -32,10 +32,16 @@
 		 */
 		public $actionResult;
 
+		/**
+		 * @var Route[]
+		 */
+		public $routes;
+
 		public function __construct(ActionExecutionContext $context, ActionResult $actionResult, ReflectionMethod $actionMethod) {
 			$this->request = $context->request;
 			$this->routeMatch = $context->routeMatch;
 			$this->modelBinders = $context->modelBinders;
+			$this->routes = $context->routes;
 			$this->action = $context->action;
 			$this->actionMethod = $actionMethod;
 			$this->actionResult = $actionResult;
