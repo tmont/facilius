@@ -41,6 +41,7 @@
 			$this->urlData = array(
 				'port' => @$server['SERVER_PORT'] ?: 80,
 				'path' => $path,
+				'pathAndQuery' => $requestUri,
 				'queryString' => new ReadOnlyArray($get),
 				'rawQueryString' => @$server['QUERY_STRING'],
 				'protocol' => strtolower($protocol),
@@ -96,6 +97,7 @@
 				case 'referrer':
 					return $this->readonlyData[$name];
 				case 'path':
+				case 'pathAndQuery':
 				case 'host':
 				case 'port':
 				case 'protocol':
