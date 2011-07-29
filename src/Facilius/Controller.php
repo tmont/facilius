@@ -150,6 +150,10 @@
 			return new JsonResult($decodedData);
 		}
 
+		public function file($fileName, $contentType, $encoding = 'UTF-8') {
+			return new ContentResult(file_get_contents($fileName), $contentType, $encoding);
+		}
+
 	}
 
 ?>

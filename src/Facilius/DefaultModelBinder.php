@@ -4,7 +4,6 @@
 
 	use ReflectionClass, ReflectionProperty;
 
-
 	class DefaultModelBinder implements ModelBinder {
 
 		/**

@@ -40,6 +40,10 @@
 			return $this;
 		}
 
+		public function clear() {
+			$this->binders = array();
+		}
+
 		/**
 		 * @param string $type
 		 * @return ModelBinder

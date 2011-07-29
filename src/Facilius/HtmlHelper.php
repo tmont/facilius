@@ -30,14 +30,7 @@
 			$routeValues['action'] = $action;
 			$routeValues['controller'] = $controller ?: $this->context->controller->getControllerName();
 
-			foreach ($this->context->routes as $route) {
-				$url = $route->generateUrl($routeValues);
-				if ($url !== null) {
-					return $url;
-				}
-			}
-
-			return '';
+			return Route::getUrl($this->context->routes, $routeValues);
 		}
 
 		public function renderPartial($name, $controller = null, $model = null) {

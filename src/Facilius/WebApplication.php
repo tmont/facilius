@@ -3,6 +3,7 @@
 	namespace Facilius;
 
 	use Exception, LogicException;
+	use Facilius\Models\UploadedFileModelBinder;
 
 	abstract class WebApplication {
 		/**
@@ -39,6 +40,7 @@
 
 		public function __construct($viewPath) {
 			$this->binders = new ModelBinderRegistry();
+			$this->binders->addBinder('Facilius\Models\UploadedFile', new UploadedFileModelBinder());
 			$this->response = new Response();
 			$this->viewPath = $viewPath;
 		}

@@ -27,6 +27,22 @@
 			$this->urlTransformer = new LowercaseHyphenUrlTransformer();
 		}
 
+		/**
+		 * @param Route[] $routes
+		 * @param array $routeValues
+		 * @return string
+		 */
+		public final static function getUrl(array $routes, array $routeValues) {
+			foreach ($routes as $route) {
+				$url = $route->generateUrl($routeValues);
+				if ($url !== null) {
+					return $url;
+				}
+			}
+
+			return '';
+		}
+
 		public function setUrlTransformer(UrlTransformer $urlTransformer) {
 			$this->urlTransformer = $urlTransformer;
 		}
