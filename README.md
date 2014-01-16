@@ -1,4 +1,6 @@
 # Facilius
+[![Build Status](https://travis-ci.org/tmont/facilius.png)](https://travis-ci.org/tmont/facilius)
+
 This is a pseudo-port of ASP.NET MVC 3ish to PHP. I wrote it
 because I wanted to. It supports model binding, action filters,
 routing and all of the other good(ish) stuff about ASP.NET MVC.
