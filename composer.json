@@ -1,4 +1,31 @@
 {
+	"name": "tmont/facilius",
+	"description": "PHP port of ASP.NET MVC. Kind of.",
+	"keywords": [ "mvc" ],
+	"license": "WTFPL",
+	"authors": [
+		{
+			"name": "Tommy Montgomery",
+			"email": "tmont@tmont.com",
+			"homepage": "http://tmont.com/",
+			"role": "Developer"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/tmont/facilius/issues",
+		"source": "https://github.com/tmont/facilius"
+	},
+	"archive": {
+		"exclude": [
+			"/build.xml",
+			"/phpunit.xml",
+			"/properties",
+			"/example",
+			"/tests",
+			".gitignore"
+		]
+	},
+
 	"require-dev": {
 		"phpunit/phpunit": "3.7.29"
 	},
