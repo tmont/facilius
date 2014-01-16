@@ -1,13 +1,13 @@
 <?php
 
-	namespace Facilius;
+	namespace Tmont\Facilius;
 
 	class ActionExecutionContext {
 		public $request;
 		public $session;
 		public $routeMatch;
 		/**
-		 * @var \Facilius\ModelBinderRegistry
+		 * @var \Tmont\Facilius\ModelBinderRegistry
 		 */
 		public $modelBinders;
 		/**

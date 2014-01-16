@@ -1,9 +1,9 @@
 <?php
 
-	namespace Facilius\Models;
+	namespace Tmont\Facilius\Models;
 
-	use Facilius\ModelBinder;
-	use Facilius\BindingContext;
+	use Tmont\Facilius\ModelBinder;
+	use Tmont\Facilius\BindingContext;
 
 	class UploadedFileModelBinder implements ModelBinder {
 

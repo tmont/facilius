@@ -1,6 +1,6 @@
 <?php
 
-	namespace Facilius;
+	namespace Tmont\Facilius;
 
 	/**
 	 * A registry of model binders for an application
@@ -8,12 +8,12 @@
 	final class ModelBinderRegistry {
 
 		/**
-		 * @var \Facilius\ModelBinder[]
+		 * @var \Tmont\Facilius\ModelBinder[]
 		 */
 		private $binders = array();
 
 		/**
-		 * @var \Facilius\ModelBinder
+		 * @var \Tmont\Facilius\ModelBinder
 		 */
 		private $defaultModelBinder;
 

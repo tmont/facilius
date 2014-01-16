@@ -1,6 +1,6 @@
 <?php
 
-	namespace Facilius;
+	namespace Tmont\Facilius;
 
 	/**
 	 * Provides a collection of helpful methods for generating HTML

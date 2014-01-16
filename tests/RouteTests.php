@@ -1,8 +1,8 @@
 <?php
 
-	namespace Facilius\Tests;
+	namespace Tmont\Facilius\Tests;
 
-	use Facilius\Route;
+	use Tmont\Facilius\Route;
 	use PHPUnit_Framework_TestCase;
 
 	class RouteTests extends PHPUnit_Framework_TestCase {
@@ -71,7 +71,7 @@
 			$route = new Route('{foo}');
 			$match = $route->match('/bar');
 			self::assertNotNull($match);
-			self::assertInstanceOf('\Facilius\RouteMatch', $match);
+			self::assertInstanceOf('\Tmont\Facilius\RouteMatch', $match);
 			self::assertEquals('bar', $match['foo']);
 		}
 

@@ -1,12 +1,12 @@
 <?php
 
-	namespace Facilius;
+	namespace Tmont\Facilius;
 
 	use ArrayAccess;
 
 	class RouteMatch extends ReadOnlyArray {
 		/**
-		 * @var \Facilius\Route
+		 * @var \Tmont\Facilius\Route
 		 */
 		private $route;
 		private $data;

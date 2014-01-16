@@ -1,6 +1,6 @@
 <?php
 
-	namespace Facilius;
+	namespace Tmont\Facilius;
 
 	class RedirectResult implements ActionResult {
 		private $redirectUrl;

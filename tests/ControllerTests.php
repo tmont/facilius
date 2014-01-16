@@ -1,17 +1,17 @@
 <?php
 
-	namespace Facilius\Tests;
+	namespace Tmont\Facilius\Tests;
 
 	use PHPUnit_Framework_TestCase;
 	use PHPUnit_Framework_Assert;
-	use Facilius\Controller;
-	use Facilius\Request;
-	use Facilius\RouteMatch;
-	use Facilius\Route;
-	use Facilius\ActionExecutionContext;
-	use Facilius\ContentResult;
-	use Facilius\ModelBinderRegistry;
-	use Facilius\BindingContext;
+	use Tmont\Facilius\Controller;
+	use Tmont\Facilius\Request;
+	use Tmont\Facilius\RouteMatch;
+	use Tmont\Facilius\Route;
+	use Tmont\Facilius\ActionExecutionContext;
+	use Tmont\Facilius\ContentResult;
+	use Tmont\Facilius\ModelBinderRegistry;
+	use Tmont\Facilius\BindingContext;
 
 	class ControllerTests extends PHPUnit_Framework_TestCase {
 
@@ -21,14 +21,14 @@
 			$result = $controller->execute($context);
 
 			self::assertNotNull($result);
-			self::assertInstanceOf('\Facilius\ContentResult', $result);
+			self::assertInstanceOf('\Tmont\Facilius\ContentResult', $result);
 			self::assertEquals('no params was executed', $result->getData());
 		}
 
 		public function testExecuteActionWithParameters() {
 			$controller = new FakeController1();
 
-			$binder = $this->getMock('\Facilius\ModelBinder', array('bindModel'));
+			$binder = $this->getMock('\Tmont\Facilius\ModelBinder', array('bindModel'));
 			$binder
 				->expects($this->at(0))
 				->method('bindModel')
@@ -63,12 +63,12 @@
 			$result = $controller->execute($context);
 
 			self::assertNotNull($result);
-			self::assertInstanceOf('\Facilius\ContentResult', $result);
+			self::assertInstanceOf('\Tmont\Facilius\ContentResult', $result);
 			self::assertEquals('has params was executed', $result->getData());
 		}
 
 		public function testExecuteUnknownActionThrowsException() {
-			$this->setExpectedException('\Facilius\UnknownActionException');
+			$this->setExpectedException('\Tmont\Facilius\UnknownActionException');
 			$controller = new FakeController1();
 			$context = new ActionExecutionContext(
 				new Request(),
@@ -82,7 +82,7 @@
 		}
 
 		public function testShouldRespectRequestMethodAnnotation() {
-			$this->setExpectedException('\Facilius\UnknownActionException');
+			$this->setExpectedException('\Tmont\Facilius\UnknownActionException');
 			$controller = new FakeController1();
 			$context = new ActionExecutionContext(
 				new Request(),

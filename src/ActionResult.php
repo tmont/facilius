@@ -1,6 +1,6 @@
 <?php
 
-	namespace Facilius;
+	namespace Tmont\Facilius;
 
 	interface ActionResult {
 		function execute(ActionResultContext $context);

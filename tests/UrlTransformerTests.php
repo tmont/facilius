@@ -1,8 +1,8 @@
 <?php
 
-	namespace Facilius\Tests;
+	namespace Tmont\Facilius\Tests;
 
-	use Facilius\LowercaseHyphenUrlTransformer;
+	use Tmont\Facilius\LowercaseHyphenUrlTransformer;
 	use PHPUnit_Framework_TestCase;
 
 	class UrlTransformerTests extends PHPUnit_Framework_TestCase {

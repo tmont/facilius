@@ -1,7 +1,7 @@
 <?php
 
 	spl_autoload_register(function($class) {
-		$prefix = 'Facilius\\';
+		$prefix = 'Tmont\\Facilius\\';
 		$baseDir = __DIR__ . '/';
 
 		$len = strlen($prefix);

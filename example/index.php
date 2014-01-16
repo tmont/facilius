@@ -1,15 +1,15 @@
 <?php
 
-	namespace Facilius\Example;
+	namespace Tmont\Facilius\Example;
 
-	use Facilius\WebApplication;
-	use Facilius\Request;
-	use Facilius\DefaultViewLocator;
-	use Facilius\ErrorModel;
-	use Facilius\View;
-	use Facilius\UnknownActionException;
-	use Facilius\ControllerConstructionException;
-	use Facilius\RenderingContext;
+	use Tmont\Facilius\WebApplication;
+	use Tmont\Facilius\Request;
+	use Tmont\Facilius\DefaultViewLocator;
+	use Tmont\Facilius\ErrorModel;
+	use Tmont\Facilius\View;
+	use Tmont\Facilius\UnknownActionException;
+	use Tmont\Facilius\ControllerConstructionException;
+	use Tmont\Facilius\RenderingContext;
 	use Exception;
 
 	require_once '../src/autoload.php';

@@ -1,9 +1,9 @@
 <?php
 
-	namespace Facilius\Tests;
+	namespace Tmont\Facilius\Tests;
 
 	use PHPUnit_Framework_TestCase, ReflectionClass;
-	use Facilius\ReflectionUtil;
+	use Tmont\Facilius\ReflectionUtil;
 
 	class ReflectionTests extends PHPUnit_Framework_TestCase {
 
@@ -13,7 +13,7 @@
 		private $class;
 
 		public function __construct() {
-			$this->class = new ReflectionClass('\Facilius\Tests\RefTest');
+			$this->class = new ReflectionClass('Tmont\Facilius\Tests\RefTest');
 		}
 
 		public function testGetParameterTypeFromDocComment() {

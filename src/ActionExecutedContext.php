@@ -1,20 +1,20 @@
 <?php
 
-	namespace Facilius;
+	namespace Tmont\Facilius;
 
 	use ReflectionMethod;
 
 	class ActionExecutedContext {
 		/**
-		 * @var \Facilius\Request
+		 * @var \Tmont\Facilius\Request
 		 */
 		public $request;
 		/**
-		 * @var \Facilius\RouteMatch
+		 * @var \Tmont\Facilius\RouteMatch
 		 */
 		public $routeMatch;
 		/**
-		 * @var \Facilius\ModelBinderRegistry
+		 * @var \Tmont\Facilius\ModelBinderRegistry
 		 */
 		public $modelBinders;
 		/**
@@ -28,7 +28,7 @@
 		public $actionMethod;
 
 		/**
-		 * @var \Facilius\ActionResult
+		 * @var \Tmont\Facilius\ActionResult
 		 */
 		public $actionResult;
 

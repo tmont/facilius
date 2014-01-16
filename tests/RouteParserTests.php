@@ -1,8 +1,8 @@
 <?php
 
-	namespace Facilius\Tests;
+	namespace Tmont\Facilius\Tests;
 
-    use Facilius\RouteParser;
+    use Tmont\Facilius\RouteParser;
     use PHPUnit_Framework_TestCase;
 
     class RouteParserTests extends PHPUnit_Framework_TestCase {

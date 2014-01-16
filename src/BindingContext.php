@@ -1,10 +1,10 @@
 <?php
 
-	namespace Facilius;
+	namespace Tmont\Facilius;
 
 	class BindingContext {
 		/**
-		 * @var \Facilius\Request
+		 * @var \Tmont\Facilius\Request
 		 */
 		public $actionContext;
 		/**

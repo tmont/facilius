@@ -1,9 +1,9 @@
 <?php
 	
-	namespace Facilius\Tests;
+	namespace Tmont\Facilius\Tests;
 	
 	use PHPUnit_Framework_TestCase;
-	use Facilius\Request;
+	use Tmont\Facilius\Request;
 
 	class RequestTest extends PHPUnit_Framework_TestCase {
 

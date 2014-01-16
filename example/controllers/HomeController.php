@@ -1,8 +1,8 @@
 <?php
 
-	namespace Facilius\Example\Controllers;
+	namespace Tmont\Facilius\Example\Controllers;
 
-	use Facilius\Controller;
+	use Tmont\Facilius\Controller;
 
 	class HomeController extends Controller {
 

@@ -1,6 +1,6 @@
 <?php
 
-	namespace Facilius;
+	namespace Tmont\Facilius;
 
 	use ReflectionMethod, Exception;
 
@@ -12,7 +12,7 @@
 		private $viewLocator;
 
 		/**
-		 * @var \Facilius\ActionFilterFactory
+		 * @var \Tmont\Facilius\ActionFilterFactory
 		 */
 		private $actionFilterFactory;
 

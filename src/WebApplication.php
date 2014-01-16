@@ -1,18 +1,18 @@
 <?php
 
-	namespace Facilius;
+	namespace Tmont\Facilius;
 
 	use Exception, LogicException;
-	use Facilius\Models\UploadedFileModelBinder;
+	use Tmont\Facilius\Models\UploadedFileModelBinder;
 
 	abstract class WebApplication {
 		/**
-		 * @var \Facilius\Route[]
+		 * @var \Tmont\Facilius\Route[]
 		 */
 		private $routes = array();
 
 		/**
-		 * @var \ModelBinderRegistry\ModelBinderRegistry
+		 * @var \Tmont\Facilius\ModelBinderRegistry
 		 */
 		private $binders;
 
@@ -32,7 +32,7 @@
 		private $currentRequest;
 
 		/**
-		 * @var \Facilius\UrlTransformer
+		 * @var \Tmont\Facilius\UrlTransformer
 		 */
 		protected $urlTransformer;
 
@@ -40,27 +40,27 @@
 
 		public function __construct($viewPath) {
 			$this->binders = new ModelBinderRegistry();
-			$this->binders->addBinder('Facilius\Models\UploadedFile', new UploadedFileModelBinder());
+			$this->binders->addBinder('Tmont\Facilius\Models\UploadedFile', new UploadedFileModelBinder());
 			$this->response = new Response();
 			$this->viewPath = $viewPath;
 		}
 
 		/**
-		 * @return \Facilius\ModelBinderRegistry
+		 * @return \Tmont\Facilius\ModelBinderRegistry
 		 */
 		protected final function getBinders() {
 			return $this->binders;
 		}
 
 		/**
-		 * @return \Facilius\Response
+		 * @return \Tmont\Facilius\Response
 		 */
 		protected final function getResponse() {
 			return $this->response;
 		}
 
 		/**
-		 * @return \Facilius\Request
+		 * @return \Tmont\Facilius\Request
 		 */
 		protected final function getRequest() {
 			return $this->currentRequest;

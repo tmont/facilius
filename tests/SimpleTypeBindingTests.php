@@ -1,20 +1,20 @@
 <?php
 
-	namespace Facilius\Tests;
+	namespace Tmont\Facilius\Tests;
 
 	use PHPUnit_Framework_TestCase;
 	use ReflectionClass, ReflectionParameter;
-	use Facilius\DefaultModelBinder;
-	use Facilius\BindingContext;
-	use Facilius\ActionExecutionContext;
-	use Facilius\Request;
-	use Facilius\RouteMatch;
-	use Facilius\Route;
-	use Facilius\ModelBinderRegistry;
+	use Tmont\Facilius\DefaultModelBinder;
+	use Tmont\Facilius\BindingContext;
+	use Tmont\Facilius\ActionExecutionContext;
+	use Tmont\Facilius\Request;
+	use Tmont\Facilius\RouteMatch;
+	use Tmont\Facilius\Route;
+	use Tmont\Facilius\ModelBinderRegistry;
 
 	class SimpleTypeBindingTests extends PHPUnit_Framework_TestCase {
 		/**
-		 * @var \Facilius\DefaultModelBinder
+		 * @var \Tmont\Facilius\DefaultModelBinder
 		 */
 		private $binder;
 		

@@ -1,6 +1,6 @@
 <?php
 
-	namespace Facilius\Models;
+	namespace Tmont\Facilius\Models;
 
 	use RuntimeException;
 
