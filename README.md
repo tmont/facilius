@@ -9,7 +9,7 @@ but it actually does work pretty well.
 ## Usage
 There is an example hello world app in [example/](./example). It
 probably works. You can test it by running `php -S localhost:8000`
-and visiting http://localhost:8000/ in your browser.
+and visiting [http://localhost:8000/](http://localhost:8000/) in your browser.
 
 ## Development
 ```bash
