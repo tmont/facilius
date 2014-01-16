@@ -12,7 +12,7 @@
 	use Tmont\Facilius\RenderingContext;
 	use Exception;
 
-	require_once '../src/autoload.php';
+	require_once __DIR__ . '/../src/autoload.php';
 
 	spl_autoload_register(function($className) {
 		$file = __DIR__ . '/controllers/' . basename(str_replace('\\', '/', $className)) . '.php';
@@ -50,21 +50,32 @@
 			}
 
 			$view = new View($this->getViewPath() . $viewPath);
-			$context = new RenderingContext($view, $this->getRequest(), $this->getRoutes(), null, new ErrorModel($e, $this->debugEnabled));
+			$context = new RenderingContext(
+				$view,
+				$this->getRequest(),
+				$this->getRoutes(),
+				null,
+				new ErrorModel($e, $this->debugEnabled)
+			);
 			$view->render($context);
 		}
 
 		protected function onStart() {
-			$this->registerRoute('{controller}/{action}/{id}', array('controller' => 'Home', 'action' => 'index', 'id' => null), array(), 'default');
+			$this->registerRoute(
+				'{controller}/{action}/{id}',
+				array('controller' => 'Home', 'action' => 'index', 'id' => null),
+				array(),
+				'default'
+			);
 		}
 
 		/**
 		 * @param string $name
-		 * @return Controller
+		 * @return \Tmont\Facilius\Controller
 		 */
 		protected function createController($name) {
-			$class = '\Facilius\Example\Controllers\\' . $name . 'Controller';
-			if (!class_exists($class) || !in_array('Facilius\Controller', class_parents($class))) {
+			$class = '\Tmont\Facilius\Example\Controllers\\' . $name . 'Controller';
+			if (!class_exists($class) || !in_array('Tmont\Facilius\Controller', class_parents($class))) {
 				return null;
 			}
 

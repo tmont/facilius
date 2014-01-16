@@ -6,6 +6,10 @@ Form Test
 
 <?php $this->section('body'); ?>
 
+	<p>
+		<?php echo $html->actionLink('Go back', 'index', 'home'); ?>
+	</p>
+
 	<table>
 		<tr>
 			<th>Foo</th>

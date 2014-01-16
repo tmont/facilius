@@ -73,7 +73,7 @@
 		 * Builds a Request object from the incoming request using the
 		 * current superglobals ($_GET, $_POST, etc.)
 		 *
-		 * @return \Facilius\Request
+		 * @return \Tmont\Facilius\Request
 		 */
 		public static function create() {
 			return new self(
