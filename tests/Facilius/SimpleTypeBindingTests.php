@@ -23,7 +23,15 @@
 		}
 
 		private function createContext(array $values, $type) {
-			return new BindingContext($values, new ActionExecutionContext(new Request(), new RouteMatch(new Route(''), array()), new ModelBinderRegistry(), ''), 'a', $type);
+			$context = new ActionExecutionContext(
+				new Request(),
+				array(),
+				array(),
+				new RouteMatch(new Route(''), array()),
+				new ModelBinderRegistry(),
+				''
+			);
+			return new BindingContext($values, $context, 'a', $type);
 		}
 
 		public function testBindDouble() {

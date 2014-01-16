@@ -17,7 +17,7 @@
 
 		public function testExecuteActionWithNoParameters() {
 			$controller = new FakeController1();
-			$context = new ActionExecutionContext(new Request(), new RouteMatch(new Route(''), array()), new ModelBinderRegistry(), 'noParams');
+			$context = new ActionExecutionContext(new Request(), array(), array(), new RouteMatch(new Route(''), array()), new ModelBinderRegistry(), 'noParams');
 			$result = $controller->execute($context);
 
 			self::assertNotNull($result);
@@ -51,7 +51,14 @@
 
 			$binders = new ModelBinderRegistry();
 			$binders->setDefaultBinder($binder);
-			$context = new ActionExecutionContext(new Request(array('foo' => 'bar'), array('foo' => 'baz', 'bar' => 'bat')), new RouteMatch(new Route(''), array()), $binders, 'hasParams');
+			$context = new ActionExecutionContext(
+				new Request(array('foo' => 'bar'), array('foo' => 'baz', 'bar' => 'bat')),
+				array(),
+				array(),
+				new RouteMatch(new Route(''), array()),
+				$binders,
+				'hasParams'
+			);
 
 			$result = $controller->execute($context);
 
@@ -63,14 +70,28 @@
 		public function testExecuteUnknownActionThrowsException() {
 			$this->setExpectedException('\Facilius\UnknownActionException');
 			$controller = new FakeController1();
-			$context = new ActionExecutionContext(new Request(), new RouteMatch(new Route(''), array()), new ModelBinderRegistry(), 'non existent');
+			$context = new ActionExecutionContext(
+				new Request(),
+				array(),
+				array(),
+				new RouteMatch(new Route(''), array()),
+				new ModelBinderRegistry(),
+				'non existent'
+			);
 			$controller->execute($context);
 		}
 
 		public function testShouldRespectRequestMethodAnnotation() {
 			$this->setExpectedException('\Facilius\UnknownActionException');
 			$controller = new FakeController1();
-			$context = new ActionExecutionContext(new Request(), new RouteMatch(new Route(''), array()), new ModelBinderRegistry(), 'postOnly');
+			$context = new ActionExecutionContext(
+				new Request(),
+				array(),
+				array(),
+				new RouteMatch(new Route(''), array()),
+				new ModelBinderRegistry(),
+				'postOnly'
+			);
 			$controller->execute($context);
 		}
 	

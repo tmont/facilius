@@ -2,8 +2,6 @@
 
 	namespace Facilius;
 
-	use ReflectionParameter;
-
 	class BindingContext {
 		/**
 		 * @var \Facilius\Request
