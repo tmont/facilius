@@ -6,10 +6,23 @@ routing and all of the other good(ish) stuff about ASP.NET MVC.
 It was more of an academic exercise than anything useful,
 but it actually does work pretty well.
 
+## Installation
+Use composer:
+
+```json
+{
+  "require": {
+    "tmont/facilius": "1.1.0"
+  }
+}
+```
+
 ## Usage
 There is an example hello world app in [example/](./example). It
 probably works. You can test it by running `(cd example && php -S localhost:8000)`
 and visiting [http://localhost:8000/](http://localhost:8000/) in your browser.
+
+Take a look at [example/index.php](./example/index.php) to see how to set up the app.
 
 ## Development
 ```bash
