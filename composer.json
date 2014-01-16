@@ -22,7 +22,8 @@
 			"/properties",
 			"/example",
 			"/tests",
-			".gitignore"
+			".gitignore",
+			".travis.yml"
 		]
 	},
 
