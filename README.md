@@ -19,6 +19,13 @@ Use composer:
 }
 ```
 
+Facilius uses PSR-4 autoloading, facilitated by composer. So the following
+will set everything up properly:
+
+```php
+require_once 'vendor/autoload.php';
+```
+
 ## Usage
 There is an example hello world app in [example/](./example). It
 probably works. You can test it by running `(cd example && php -S localhost:8000)`
