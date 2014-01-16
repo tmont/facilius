@@ -12,7 +12,7 @@
 	use Tmont\Facilius\RenderingContext;
 	use Exception;
 
-	require_once __DIR__ . '/../src/autoload.php';
+	require_once __DIR__ . '/../vendor/autoload.php';
 
 	spl_autoload_register(function($className) {
 		$file = __DIR__ . '/controllers/' . basename(str_replace('\\', '/', $className)) . '.php';
