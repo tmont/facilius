@@ -17,6 +17,7 @@
 		}
 
 		/**
+		 * @param string $text
 		 * @param string $action
 		 * @param string $controller
 		 * @param array $routeValues
