@@ -1,5 +1,5 @@
 language: php
 install: composer install
-script: vendor/bin/phpunit
+script: vendor/bin/phpunit --bootstrap tests/bootstrap.php
 php:
   - 5.4
