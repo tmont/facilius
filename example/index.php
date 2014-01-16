@@ -12,7 +12,7 @@
 	use Facilius\RenderingContext;
 	use Exception;
 
-	require_once '../src/Facilius/bootstrap.php';
+	require_once '../src/autoload.php';
 
 	spl_autoload_register(function($className) {
 		$file = __DIR__ . '/controllers/' . basename(str_replace('\\', '/', $className)) . '.php';
