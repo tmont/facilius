@@ -3,6 +3,7 @@
 	"description": "PHP port of ASP.NET MVC. Kind of.",
 	"keywords": [ "mvc" ],
 	"license": "WTFPL",
+	"minimum-stability": "stable",
 	"authors": [
 		{
 			"name": "Tommy Montgomery",
