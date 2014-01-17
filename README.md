@@ -14,7 +14,7 @@ Use composer:
 ```json
 {
   "require": {
-    "tmont/facilius": "1.1.0"
+    "tmont/facilius": "1.1.1"
   }
 }
 ```
